@@ -1,0 +1,11 @@
+server:
+  port: 8761
+
+eureka:
+  server:
+    peer-node-read-timeout-ms: 1000
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  instance:
+   prefer-ip-address: true

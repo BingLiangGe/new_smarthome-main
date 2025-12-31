@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.HomeDirectDeviceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.HomeDirectDevice">
+        <id column="id" property="id" />
+        <result column="home_id" property="homeId" />
+        <result column="data" property="data" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        home_id, data, id
+    </sql>
+
+</mapper>

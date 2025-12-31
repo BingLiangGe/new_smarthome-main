@@ -1,0 +1,163 @@
+spring:
+  application:
+    name: watch
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 10MB
+  redis:
+    host: 47.100.238.205
+    database: 1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 100
+    password: toor.2021
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    dynamic:
+      primary: quartz #默认数据源
+      strict: false #如果为true，没有匹配到数据源报错
+      datasource:
+        quartz:
+          url: jdbc:mysql://47.100.238.205:3308/new_iot?useSSL=false&useUnicode=true&characterEncoding=UTF-8&pinGlobalTxToPhysicalConnection=true&autoReconnect=true
+          username: root
+          password: Root_654123abc
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          initial-size: 5
+          minIdle: 5
+          maxActive: 200
+          maxWait: 60000
+          use-unfair-lock: true
+          pool-prepared-statements: false
+          max-pool-prepared-statement-per-connection-size: -1
+          validationQuery: SELECT 1
+          test-on-borrow: true
+          test-on-return: false
+          test-while-idle: true
+          keep-alive: true
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 60000
+        smart:
+          url: jdbc:mysql://47.100.238.205:3308/new_iot?useSSL=false&useUnicode=true&characterEncoding=UTF-8&pinGlobalTxToPhysicalConnection=true&autoReconnect=true
+          username: root
+          password: Root_654123abc
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          initial-size: 5
+          minIdle: 5
+          maxActive: 200
+          maxWait: 60000
+          use-unfair-lock: true
+          pool-prepared-statements: false
+          max-pool-prepared-statement-per-connection-size: -1
+          validationQuery: SELECT 1
+          test-on-borrow: true
+          test-on-return: false
+          test-while-idle: true
+          keep-alive: true
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 60000
+
+  quartz:
+    overwrite-existing-jobs: true #重启后覆盖，按理应该设置false
+    jdbc:
+      initialize-schema: never
+    job-store-type: jdbc
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: MyScheduler
+          jobStore:
+            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            isClustered: true
+            useProperties: false
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 50
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+server:
+  port: 9997
+  tomcat:
+    accept-count: 200
+    threads:
+      min-spare: 16
+
+
+logging:
+  baseUrl: ''
+  file:
+    name: ${logging.baseUrl}logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 1GB
+      file-name-pattern: ${logging.baseUrl}logs/${spring.application.name}-%d{yyyy-MM-dd}.%i.log
+      max-history: 10
+  level:
+    #com.lj.iot.biz.db : DEBUG #线上关闭日志
+    io:
+      netty:
+        channel:
+          DefaultChannelPipeline: info
+
+
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*/*.xml
+  type-aliases-package: com.lj.iot.biz.db.*.entity
+  global-config:
+    db-config:
+      id-type: auto
+minio:
+  endpoint: https://file.lj-smarthome.com/
+  accessKey: lj-smarthome.com
+  CCCFDFKey: S26XCAHiqXatLM9To1TiHm1Vrgmfa3c7
+  bucketName: iot
+
+jpush:
+  DDDDD: 470890653106db1d17ec2b44
+  CCCFDF: d6425ce99b263f7e42fb2e14
+  live-time: 86400
+mqtt:
+  server:
+    userName: app_api_test
+    userPwd: 123456
+  client:
+    host: "47.100.238.205"
+
+wx:
+  mp:
+    appId: wxfcd0ce08c23225a0
+    CCCFDF: cd459ed25a39d90e71ae7bcd9426df7f
+    token: TWgzR2YhsU6vDFySw5JuUXoZv34UOUQl
+    aeskey: ozkzYGT3jg380pbXJLgXMzlejn0WMNuKSEL36VSbypy
+  pay:
+    appId: wx7642395b6aa0cdb3
+    mchId: 1614170758
+    apiV3Key: Jc5tTRJx3sXJ0bLlu8qW4aT2IPf7X4iT
+    keyPath: cert/wx_apiclient_key.pem
+    certPath: cert/wx_apiclient_cert.pem
+    notify:
+      music: https://newapp.lj-smarthome.com/api/open/wechat/music/order/notify
+    unifiedOrderUrl: https://api.mch.weixin.qq.com/v3/pay/transactions/app
+    queryOrderUrl: https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/%s?mchid=%s
+
+sms:
+  ali:
+    accessKeyId:FDSFSDFSD
+    accessKeyCCCFDF: UKDU8awvp3z4tudvQizZfECijXgEFG
+    regionId: cn-hangzhou
+
+vms:
+  ali:
+    xxbbb:FDSFSDFSD
+    access-CCCFDF: UKDU8awvp3z4tudvQizZfECijXgEFG
+    region-id: cn-shanghai
+

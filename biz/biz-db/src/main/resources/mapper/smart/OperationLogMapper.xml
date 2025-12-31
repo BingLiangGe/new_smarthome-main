@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.OperationLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.OperationLog">
+        <id column="id" property="id"/>
+        <result column="device_id" property="deviceId"/>
+        <result column="product_id" property="productId"/>
+        <result column="product_type" property="productType"/>
+        <result column="custom_name" property="customName"/>
+        <result column="user_id" property="userId"/>
+        <result column="master_device_id" property="masterDeviceId"/>
+        <result column="signal_type" property="signalType"/>
+        <result column="params" property="params"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , device_id, product_id, product_type, custom_name, user_id, master_device_id, signal_type, params, status, remark, create_time, update_time
+    </sql>
+
+
+    <select id="customPage" resultMap="BaseResultMap">
+        select * from operation_log
+        <where>
+            <if test="params.deviceId!=null and params.deviceId!=''">
+                AND device_id=#{params.deviceId}
+            </if>
+            <if test="params.remark!=null and params.remark!=''">
+                AND remark like concat('%',#{params.remark},'%')
+            </if>
+            <if test="params.status!=null and params.status!=''">
+                AND status=#{params.status}
+            </if>
+            <if test="params.action!=null and params.action!=''">
+                AND action=#{params.action}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                product_id LIKE CONCAT(#{params.search},"%")
+                OR product_type LIKE CONCAT(#{params.search},"%")
+                OR master_device_id LIKE CONCAT(#{params.search},"%")
+                OR params LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+
+
+
+    <select id="task" resultMap="BaseResultMap">
+        SELECT * FROM user_device WHERE product_id IN (213350486,1000000200,1000000100)  AND device_id NOT IN (SELECT device_id FROM operation_log WHERE create_time >  DATE_SUB(NOW(), INTERVAL  60 second) AND remark  = "thing/event/topology/line" AND product_id IN(213350486,1000000200,1000000100))
+    </select>
+
+    <select id="selectOperationLogLimit" resultType="com.lj.iot.biz.db.smart.entity.OperationLog">
+        SELECT ol.`id`,
+               ol.`device_id`,
+               ol.`custom_name`,
+               ol.`master_device_id`,
+               ol.`signal_type`,
+               ol.`remark`,
+               ol.`create_time`,
+               ol.`action`
+        FROM operation_log ol
+        <where>
+            <if test="log.masterDeviceId != null and log.masterDeviceId != ''">
+                and ol.master_device_id like concat(#{log.masterDeviceId},'%')
+            </if>
+            <if test="log.deviceId != null and log.deviceId != ''">
+                and ol.device_id like concat(#{log.deviceId},'%')
+            </if>
+            <if test="log.signalType != null and log.signalType != ''">
+                and ol.signal_type=#{log.signalType}
+            </if>
+            <if test="log.action != -1">
+                and ol.action=#{action}
+            </if>
+            <if test="log.startTime != null and log.startTime != ''">
+                and ol.create_time &gt;=#{log.startTime}
+            </if>
+            <if test="log.endTime != null and log.endTime != ''">
+                and ol.create_time &lt;=#{log.endTime}
+            </if>
+        </where>
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="selectOperationLogLimitCount" resultType="java.lang.Integer">
+        SELECT
+            count(1)
+        FROM operation_log ol
+        <where>
+            <if test="log.masterDeviceId != null and log.masterDeviceId != ''">
+                and ol.master_device_id like concat(#{log.masterDeviceId},'%')
+            </if>
+            <if test="log.deviceId != null and log.deviceId != ''">
+                and ol.device_id like concat(#{log.deviceId},'%')
+            </if>
+            <if test="log.signalType != null and log.signalType != ''">
+                and ol.signal_type=#{log.signalType}
+            </if>
+            <if test="log.action != -1">
+                and ol.action=#{action}
+            </if>
+            <if test="log.startTime != null and log.startTime != ''">
+                and ol.create_time &gt;=#{log.startTime}
+            </if>
+            <if test="log.endTime != null and log.endTime != ''">
+                and ol.create_time &lt;=#{log.endTime}
+            </if>
+        </where>
+    </select>
+</mapper>

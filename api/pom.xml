@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>parent</artifactId>
+        <groupId>com.lj.iot</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <modules>
+        <module>system-api</module>
+        <module>app-api</module>
+        <module>hotel-api</module>
+        <module>websocket</module>
+        <module>mqtt</module>
+        <module>job</module>
+        <module>demo-api</module>
+        <module>eureka</module>
+        <module>admin-server</module>
+        <module>watch-netty</module>
+        <module>mq-to-kafka-api</module>
+        <module>kafka-consume-api</module>
+        <module>four-friends-api</module>
+    </modules>
+
+    <artifactId>api</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>api</name>
+    <description>Demo project for Spring Boot</description>
+    <packaging>pom</packaging>
+    <properties>
+        <skipTests>true</skipTests>
+        <java.version>11</java.version>
+    </properties>
+    <distributionManagement>
+        <!-- Maven 上传设置 -->
+        <repository>
+            <id>nexus</id>   <!-- 保持和Settings.xml中配置的Server ID一致 -->
+            <name>snapshots</name>
+            <url>http://192.168.1.73:8081/repository/maven-snapshots/</url>  <!-- 推送到Maven仓库的maven-releases下 -->
+        </repository>
+    </distributionManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

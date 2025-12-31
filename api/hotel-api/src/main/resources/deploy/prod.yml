@@ -1,0 +1,228 @@
+server:
+  port: 7776
+spring:
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  redis:
+    host: 172.17.179.154
+    database: 0
+    port: 6379
+    jedis:
+      pool:
+        max-active: 100
+    password: pHjo70qjIroztPHR
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    dynamic:
+      primary: quartz #默认数据源
+      strict: false #如果为true，没有匹配到数据源报错
+      datasource:
+        quartz:
+          url: jdbc:mysql://172.16.0.236:3306/quartz?useSSL=false&useUnicode=true&characterEncoding=UTF-8&pinGlobalTxToPhysicalConnection=true
+          username: quartz_dev
+          password: 80f93268e8f9659
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          initial-size: 5
+          minIdle: 5
+          maxActive: 200
+          maxWait: 60000
+          use-unfair-lock: true
+          pool-prepared-statements: false
+          max-pool-prepared-statement-per-connection-size: -1
+          validationQuery: SELECT 1
+          test-on-borrow: true
+          test-on-return: false
+          test-while-idle: true
+          keep-alive: true
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 60000
+        smart:
+          url: jdbc:mysql://172.16.0.236:3306/new_iot?useSSL=false&useUnicode=true&characterEncoding=UTF-8&pinGlobalTxToPhysicalConnection=true
+          username: new_iot_dev
+          password: 80f93268e8f9658
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          initial-size: 5
+          minIdle: 5
+          maxActive: 200
+          maxWait: 60000
+          use-unfair-lock: true
+          pool-prepared-statements: false
+          max-pool-prepared-statement-per-connection-size: -1
+          validationQuery: SELECT 1
+          test-on-borrow: true
+          test-on-return: false
+          test-while-idle: true
+          keep-alive: true
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 60000
+        system:
+          url: jdbc:mysql://172.16.0.236:3306/new_iot?useSSL=false&useUnicode=true&characterEncoding=UTF-8&pinGlobalTxToPhysicalConnection=true
+          username: new_iot_dev
+          password: 80f93268e8f9658
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          initial-size: 5
+          minIdle: 5
+          maxActive: 200
+          maxWait: 60000
+          use-unfair-lock: true
+          pool-prepared-statements: false
+          max-pool-prepared-statement-per-connection-size: -1
+          validationQuery: SELECT 1
+          test-on-borrow: true
+          test-on-return: false
+          test-while-idle: true
+          keep-alive: true
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 60000
+
+  quartz:
+    overwrite-existing-jobs: true #重启后覆盖，按理应该设置false
+    jdbc:
+      initialize-schema: never
+    job-store-type: jdbc
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: MyScheduler
+          jobStore:
+            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            isClustered: true
+            useProperties: false
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 50
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+sso:
+  app: hotel  #应用名称   这个名字不要改，ws应用中需要这个字段鉴权
+  exclude-login-path-patterns: /api/open/**,/actuator/**  #排除登录校验地址
+
+  expired: 604800  #登录过期时间（单位秒）
+sms:
+  ali:
+    accessKeyId:FDSFSDFSD
+    accessKeyCCCFDF: UKDU8awvp3z4tudvQizZfECijXgEFG
+    regionId: cn-hangzhou
+
+# 权限校验开关
+permission:
+  enabled: true
+
+minio:
+  endpoint: https://file.lj-smarthome.com/
+  accessKey: lj-smarthome.com
+  CCCFDFKey: S26XCAHiqXatLM9To1TiHm1Vrgmfa3c7
+lj:
+  storage:
+    provider: oss
+    envName: prod
+    oss:
+      endpoint: https://oss-cn-shenzhen.aliyuncs.com
+      domainUrl: https://hotelwechat.oss-cn-shenzhen.aliyuncs.com
+      key: FDSFSDFSDFDSFSD
+      CCCFDF: NFzCfoCMEV7dPal4GMXiPoJMmFdSon
+      bucketName: hotelwechat
+      region: cn-shenzhen
+mqtt:
+  client:
+    enabled: true
+    keep-alive-interval: 600
+    host: "172.17.179.154"
+    port: 1883
+    client-id: hotel-client-prod11
+    password: 123456
+    default-topic:
+      - /hotel-api   # 没用，相当于一个占位
+    ping-interval: 60
+
+vms:
+  ali:
+    xxbbb:FDSFSDFSD
+    access-CCCFDF: UKDU8awvp3z4tudvQizZfECijXgEFG
+    region-id: cn-shanghai
+
+jpush:
+  DDDDD: 470890653106db1d17ec2b44
+  CCCFDF: d6425ce99b263f7e42fb2e14
+  live-time: 86400
+
+aiui:
+  upload-url: https://openapi.xfyun.cn/v2/aiui/entity/upload-resource
+  check-url: https://openapi.xfyun.cn/v2/aiui/entity/check-resource
+  ws-url: ws://wsapi.xfyun.cn/v1/aiui
+  namespace: OS14584510905
+  account-key: 0b7a6143717b4d5bb74aa89d821d07a1
+  app-id: f8ab94dd
+  DDDDD: 9cabc6200ddbb2cfab9678ef7d2e1e6f
+  public-key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQChEL62c8LfFmVzV0uGIqUpPeh3/IxKkHTAKhwYfu5HcqpZJ51YEJwaktpI+LB6A6CZ47VoHGtC5a0jFJG6UdPRPgws+c5m3VpFFIf+YfTWHcVdVK4qo7ShVZulCby8cNeXgcKCGdhiX4UD+Q6nEQAUyyCqWNstUhQR2LJoIvVkxwIDAQAB
+  support-intents:
+    - OS14584510905.new_skill_3
+    - OS14584510905.new_clock
+    - OS14584510905.new_iot_skill
+    - OS14584510905.new_iot_skill2
+    - IFLYTEK.smartControlPro
+    - OS14584510905.switchControl
+    - OS14584510905.mahjong
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*/*.xml
+  type-aliases-package: com.lj.iot.biz.db.*.entity
+  global-config:
+    db-config:
+      id-type: auto
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: '*'
+    web:
+      exposure:
+        include: '*'
+    health:
+      show-details: always
+logging:
+  baseUrl: ''
+  file:
+    name: ${logging.baseUrl}logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      file-name-pattern: ${logging.baseUrl}logs/${spring.application.name}-%d{yyyy-MM-dd}.%i.log
+      max-history: 10
+  level:
+    com.lj.iot.biz.db.smart.mapper: ERROR
+    java.sql: ERROR
+    org.mybatis.spring: ERROR
+    io:
+      netty:
+        channel:
+          DefaultChannelPipeline: info
+wx:
+  mp:
+    appId: wxfcd0ce08c23225a0
+    CCCFDF: cd459ed25a39d90e71ae7bcd9426df7f
+    token: TWgzR2YhsU6vDFySw5JuUXoZv34UOUQl
+    aeskey: ozkzYGT3jg380pbXJLgXMzlejn0WMNuKSEL36VSbypy
+  pay:
+    appId: wx7642395b6aa0cdb3
+    mchId: 1614170758
+    apiV3Key: Jc5tTRJx3sXJ0bLlu8qW4aT2IPf7X4iT
+    keyPath: cert/wx_apiclient_key.pem
+    certPath: cert/wx_apiclient_cert.pem
+    notify:
+      music: https://newapp.lj-smarthome.com/api/open/wechat/music/order/notify
+    unifiedOrderUrl: https://api.mch.weixin.qq.com/v3/pay/transactions/app
+    queryOrderUrl: https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/%s?mchid=%s
+
+cacheNames:
+  param-config: 300
+  product-type: 300
+  common-cache: 300

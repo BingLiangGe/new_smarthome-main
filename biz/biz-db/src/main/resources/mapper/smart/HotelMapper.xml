@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.HotelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.Hotel">
+        <id column="id" property="id"/>
+        <result column="hotel_user_id" property="hotelUserId"/>
+        <result column="hotel_name" property="hotelName"/>
+        <result column="remarks" property="remarks"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , hotel_user_id, hotel_name, remarks, create_time, update_time
+    </sql>
+
+    <select id="customList" resultMap="BaseResultMap">
+        select h.*
+        from hotel h
+                 inner join hotel_user hu on h.id = hu.hotel_id
+        where hu.member_user_id = #{userId}
+    </select>
+
+    <select id="findHotelPageLimit" resultType="com.lj.iot.biz.db.smart.entity.Hotel">
+        SELECT
+        h.`id`,
+        h.`hotel_name`,
+        h.`remarks`,
+        h.`create_time`,
+        concat(h.`hotel_user_id`,'qwe') hotel_user_id
+        FROM
+        hotel h
+        LEFT JOIN hotel_user_account hu
+        ON hu.`id` = h.`hotel_user_id`
+        <where>
+            <if test="hotel.hotelName != null and hotel.hotelName != ''">
+                and h.hotel_name like concat('%',#{hotel.hotelName},'%')
+            </if>
+        </where>
+        order by hu.create_time desc
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="findHotelPageLimitCount" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM
+        hotel h
+        LEFT JOIN hotel_user_account hu
+        ON hu.`id` = h.`hotel_user_id`
+        <where>
+            <if test="hotel.hotelName != null and hotel.hotelName != ''">
+                and h.hotel_name like concat('%',#{hotel.hotelName},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

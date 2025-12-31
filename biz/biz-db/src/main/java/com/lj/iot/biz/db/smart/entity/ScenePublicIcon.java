@@ -1,0 +1,1 @@
+package com.lj.iot.biz.db.smart.entity;import lombok.Data;@Datapublic class ScenePublicIcon {    private Integer id;    private String url;}

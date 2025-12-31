@@ -1,0 +1,452 @@
+spring:
+  application:
+    name: kafka-consume-api
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  redis:
+    host: 127.0.0.1
+    database: 1
+    port: 6287
+    jedis:
+      pool:
+        max-active: 100
+    password: toor.2021
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    dynamic:
+      primary: smart #默认数据源
+      strict: false #如果为true，没有匹配到数据源报错
+      datasource:
+        quartz:
+          url: jdbc:mysql://127.0.0.1:3308/quartz?useSSL=false&useUnicode=true&characterEncoding=UTF-8&pinGlobalTxToPhysicalConnection=true&autoReconnect=true&connectTimeout=30000&socketTimeout=60000
+          username: root
+          password: Root_654123abc
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          initial-size: 5
+          minIdle: 5
+          maxActive: 200
+          maxWait: 60000
+          use-unfair-lock: true
+          pool-prepared-statements: false
+          max-pool-prepared-statement-per-connection-size: -1
+          validationQuery: SELECT 1
+          test-on-borrow: true
+          test-on-return: false
+          test-while-idle: true
+          keep-alive: true
+          timeBetweenEvictionRunsMillis: 60000
+          maxEvictableIdleTimeMillis: 600000
+          minEvictableIdleTimeMillis: 300000
+        smart:
+          url: jdbc:mysql://127.0.0.1:3308/new_iot?useSSL=false&useUnicode=true&characterEncoding=UTF-8&pinGlobalTxToPhysicalConnection=true&autoReconnect=true&connectTimeout=30000&socketTimeout=60000
+          username: root
+          password: Root_654123abc
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          initial-size: 5
+          minIdle: 5
+          maxActive: 200
+          maxWait: 60000
+          use-unfair-lock: true
+          pool-prepared-statements: false
+          max-pool-prepared-statement-per-connection-size: -1
+          validationQuery: SELECT 1
+          test-on-borrow: true
+          test-on-return: false
+          test-while-idle: true
+          keep-alive: true
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 300000
+          maxEvictableIdleTimeMillis: 600000
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    #    bootstrap-servers: 192.168.2.39:9092,192.168.2.40:9092,192.168.2.41:9092
+    #bootstrap-servers: 39.108.225.127:9092,8.134.76.68:9092,8.134.135.112:9092
+  cloud:
+    stream:
+      default-binder: kafka #Default binder
+      function:
+        definition: serviceLoginTokenReply;serviceDeviceBindReply;eventSysConnected;eventSysDisconnected;eventSos;serviceSignalStudyRepay;servicePropertiesSetReply;eventSubDeviceLine;eventTopologyDelete;serviceTopologyAddReply;serviceTopologyDeleteReply;pubDeviceHash;serviceMusicChangeReply;eventSubDeviceOffline;eventSubDeviceNetwork;pubSubSubDevice;eventSubDeviceBindSuccess;serviceTopologyOtaReply;serviceMeshUnbindReply;eventTopologyList;eventSubDeviceRegister;eventDeviceHash;eventPropertiesPost;signalSetReply;propertyBindReply;topologyNotifyReply;deviceNoExistReply
+      bindings:
+        #缺省的输入、输出通道（配置自己定义的通道与哪个中间件交互）
+        serviceLoginTokenReply-in-0:
+          destination: service_login_token_reply
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        serviceDeviceBindReply-in-0:
+          destination: service_device_bind_reply
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        eventSubPlayerReply-in-0:
+          destination: event_sub_player_reply
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        eventSysConnected-in-0:
+          destination: event_sys_connected
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        eventSysDisconnected-in-0:
+          destination: event_sys_disconnected
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        eventSos-in-0:
+          destination: event_sos
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        serviceSignalStudyRepay-in-0:
+          destination: service_signal_study_repay
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        servicePropertiesSetReply-in-0:
+          destination: service_properties_set_reply
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        eventSubDeviceLine-in-0:
+          destination: event_sub_device_line
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        eventTopologyDelete-in-0:
+          destination: event_topology_delete
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        serviceTopologyAddReply-in-0:
+          destination: service_topology_add_reply
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        serviceTopologyDeleteReply-in-0:
+          destination: service_topology_delete_reply
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        pubDeviceHash-in-0:
+          destination: pub_device_hash
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        serviceMusicChangeReply-in-0:
+          destination: service_music_change_reply
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        eventSubDeviceOffline-in-0:
+          destination: event_sub_device_offline
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        eventSubDeviceNetwork-in-0:
+          destination: event_sub_device_network
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        pubSubSubDevice-in-0:
+          destination: pub_sub_sub_device
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        eventSubDeviceBindSuccess-in-0:
+          destination: event_sub_device_bind_success
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        serviceTopologyOtaReply-in-0:
+          destination: service_topology_ota_reply
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        serviceMeshUnbindReply-in-0:
+          destination: service_mesh_unbind_reply
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        eventTopologyList-in-0:
+          destination: event_topology_list
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        eventSubDeviceRegister-in-0:
+          destination: event_sub_device_register
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        eventDeviceHash-in-0:
+          destination: event_device_hash
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        eventPropertiesPost-in-0:
+          destination: event_properties_post
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        signalSetReply-in-0:
+          destination: signal_set_reply
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        propertyBindReply-in-0:
+          destination: property_bind_reply
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        topologyNotifyReply-in-0:
+          destination: topology_notify_reply
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        deviceNoExistReply-in-0:
+          destination: device_no_exist_reply
+          binder: kafka
+          group: channel_a_input_group
+          content-type: application/json
+          consumer:
+            concurrency: 3 #入站消费者的并发性
+            maxAttempts: 3 # 当消息消费失败时，尝试消费该消息的最大次数（消息消费失败后，发布者会重新投递）。默认3
+            backOffInitialInterval: 1000 # 消息消费失败后重试消费消息的初始化间隔时间。默认1s，即第一次重试消费会在1s后进行
+            backOffMultiplier: 2 # 相邻两次重试之间的间隔时间的倍数。默认2，即第二次是第一次间隔时间的2倍，第三次是第二次的2倍
+            backOffMaxInterval: 10000 # 下一次尝试重试的最大时间间隔，默认为10000ms，即10s。
+        #告警的输入、输出通道（多主题、分组测试用，实际开发中根据业务需求定义）
+        #        es_alarm_input:
+        #          destination: es_alarm_topic
+        #          binder: kafka
+        #          group: es_alarm_group
+        #kafka配置
+      kafka:
+        binder:
+          autoCreateTopics: true   # 自动创建topics
+          autoAddPartitions: true
+          replicationFactor: 1
+          brokers: ${spring.kafka.bootstrap-servers}  #Kafka的服务端列表，cm02为集群节点，在本地host配置，这里替换成你的IP即可
+          zkNodes: 127.0.0.1:2181  #Kafka服务端连接的ZooKeeper节点列表
+          #          zkNodes: 192.168.2.39:2181,192.168.2.40:2181,192.168.2.41:2181
+          requiredAcks: 1
+server:
+  port: 6012
+
+
+logging:
+  baseUrl: ''
+  file:
+    name: ${logging.baseUrl}logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 50MB
+      file-name-pattern: ${logging.baseUrl}logs/${spring.application.name}-%d{yyyy-MM-dd}.%i.log
+      max-history: 10
+  level:
+    root: info
+    io:
+      netty:
+        channel:
+          DefaultChannelPipeline: info
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*/*.xml
+  type-aliases-package: com.lj.iot.biz.db.*.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    db-config:
+      id-type: auto
+
+wx:
+  mp:
+    appId: wxfcd0ce08c23225a0
+  pay:
+    appId: wxe809cce3e481d3ed
+    mchId: 1614170758
+
+minio:
+  endpoint: https://file.lj-smarthome.com/
+  accessKey: lj-smarthome.com
+  CCCFDFKey: S26XCAHiqXatLM9To1TiHm1Vrgmfa3c7
+jpush:
+  DDDDD: 470890653106db1d17ec2b44
+  CCCFDF: d6425ce99b263f7e42fb2e14
+  live-time: 86400
+
+mqtt:
+  client:
+    enabled: true
+    keep-alive-interval: 600
+    #    host: "192.168.2.32"
+    host: "127.0.0.1"
+    #    host: "47.107.86.36"
+    port: 1883
+    client-id: kafka-consume-api-test11
+    password: 123456
+    default-topic:
+      - /kafka-consume-api
+    ping-interval: 60

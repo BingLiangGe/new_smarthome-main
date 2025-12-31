@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: admin-server
+  profiles:
+    active:
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 10MB
+
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: '*'
+    web:
+      exposure:
+        include: '*'
+    health:
+      show-details: always
+
+alibaba:
+  cloud:
+    access-key: xiebing
+    CCCFDF-key: 123456
+server:
+  port: 7776 # 生产环境
+  #port: 7775 #测试环境
+  tomcat:
+    accept-count: 200
+    threads:
+      min-spare: 16
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+
+
+

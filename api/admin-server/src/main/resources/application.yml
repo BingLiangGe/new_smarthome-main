@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: admin-server
+  profiles:
+    active:
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 10MB
+
+server:
+  port: 7771 # 生产环境
+  #port: 7775 #测试环境
+  tomcat:
+    accept-count: 200
+    threads:
+      min-spare: 16
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+logging:
+  baseUrl: ''
+  file:
+    name: ${logging.baseUrl}logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 1GB
+      file-name-pattern: ${logging.baseUrl}logs/${spring.application.name}-%d{yyyy-MM-dd}.%i.log
+      max-history: 10
+  level:
+    #com.lj.iot.biz.db : DEBUG #线上关闭日志
+    io:
+      netty:
+        channel:
+          DefaultChannelPipeline: info
+
+
+

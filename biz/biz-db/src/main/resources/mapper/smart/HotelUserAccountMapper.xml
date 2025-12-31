@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.HotelUserAccountMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.HotelUserAccount">
+        <id column="id" property="id" />
+        <result column="mobile" property="mobile" />
+        <result column="nickname" property="nickname" />
+        <result column="email" property="email" />
+        <result column="password" property="password" />
+        <result column="gender" property="gender" />
+        <result column="avatar_url" property="avatarUrl" />
+        <result column="open_id" property="openId" />
+        <result column="actual_user_id" property="actualUserId" />
+        <result column="type" property="type" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, mobile, nickname, email, password, gender, avatar_url, open_id, actual_user_id, type, create_time, update_time
+    </sql>
+
+
+    <select id="getHotelUserLimit" resultType="com.lj.iot.biz.db.smart.entity.HotelUserAccount">
+        SELECT
+            huc.id,
+            huc.mobile,
+            huc.nickname,
+            huc.create_time
+        FROM
+            hotel_user_account huc
+        WHERE 1 = 1
+        <if test="userAccount.mobile != null and userAccount.mobile != ''">
+            and huc.mobile like concat('%',#{userAccount.mobile},'%')
+        </if>
+        <if test="userAccount.nickname != null and userAccount.nickname != ''">
+            and huc.nickname like concat('%',#{userAccount.nickname},'%')
+        </if>
+        ORDER BY huc.create_time DESC
+        limit #{pageIndex},#{pageSize}
+    </select>
+    <select id="getHotelUserLimitCount" resultType="java.lang.Integer">
+        SELECT
+          count(1)
+        FROM
+        hotel_user_account huc
+        WHERE 1 = 1
+        <if test="userAccount.mobile != null and userAccount.mobile != ''">
+            and huc.mobile like concat('%',#{userAccount.mobile},'%')
+        </if>
+        <if test="userAccount.nickname != null and userAccount.nickname != ''">
+            and huc.nickname like concat('%',#{userAccount.nickname},'%')
+        </if>
+    </select>
+
+    <select id="getHotelLimit" resultType="com.lj.iot.biz.db.smart.entity.Hotel">
+        SELECT
+        h.`id`,
+        h.`hotel_user_id`,
+        h.`hotel_name`,
+        h.`remarks`,
+        h.`create_time`,
+        h.`update_time`
+        FROM
+        hotel h
+        <where>
+            <if test="hotel.hotelUserId != null and hotel.hotelUserId != ''">
+                and h.hotel_user_id = #{hotel.hotelUserId}
+            </if>
+            <if test="hotel.hotelName != null and hotel.hotelName != ''">
+                and h.hotel_name like concat('%',#{hotel.hotelName},'%')
+            </if>
+        </where>
+        ORDER BY h.create_time DESC
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="getHotelLimitCount" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM
+        hotel h
+        <where>
+            <if test="hotel.hotelUserId != null and hotel.hotelUserId != ''">
+                and h.hotel_user_id = #{hotel.hotelUserId}
+            </if>
+            <if test="hotel.hotelName != null and hotel.hotelName != ''">
+                and h.hotel_name like concat('%',#{hotel.hotelName},'%')
+            </if>
+        </where>
+        ORDER BY h.create_time DESC
+    </select>
+
+</mapper>

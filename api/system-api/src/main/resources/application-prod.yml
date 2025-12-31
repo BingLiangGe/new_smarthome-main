@@ -1,0 +1,159 @@
+#spring:
+#  redis:
+#    host: 47.100.211.192
+#    database: 1
+#    port: 6379
+#    jedis:
+#      pool:
+#        max-active: 100
+#    password: ljwL20230307
+#  datasource:
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    dynamic:
+#      primary: quartz #默认数据源
+#      strict: false #如果为true，没有匹配到数据源报错
+#      datasource:
+#        quartz:
+#          url: jdbc:mysql://47.100.211.192:3306/quartz?useSSL=false&useUnicode=true&characterEncoding=UTF-8&pinGlobalTxToPhysicalConnection=true&autoReconnect=true
+#          username: root
+#          password: lj2023@Root
+#          driver-class-name: com.mysql.cj.jdbc.Driver
+#          initial-size: 5
+#          minIdle: 5
+#          maxActive: 200
+#          maxWait: 60000
+#          use-unfair-lock: true
+#          pool-prepared-statements: false
+#          max-pool-prepared-statement-per-connection-size: -1
+#          validationQuery: SELECT 1
+#          test-on-borrow: true
+#          test-on-return: false
+#          test-while-idle: true
+#          keep-alive: true
+#          timeBetweenEvictionRunsMillis: 60000
+#          minEvictableIdleTimeMillis: 60000
+#        smart:
+#          url: jdbc:mysql://47.100.211.192:3306/new_iot?useSSL=false&useUnicode=true&characterEncoding=UTF-8&pinGlobalTxToPhysicalConnection=true
+#          username: root
+#          password: lj2023@Root
+#          driver-class-name: com.mysql.cj.jdbc.Driver
+#          initial-size: 5
+#          minIdle: 5
+#          maxActive: 200
+#          maxWait: 60000
+#          use-unfair-lock: true
+#          pool-prepared-statements: false
+#          max-pool-prepared-statement-per-connection-size: -1
+#          validationQuery: SELECT 1
+#          test-on-borrow: true
+#          test-on-return: false
+#          test-while-idle: true
+#          keep-alive: true
+#          timeBetweenEvictionRunsMillis: 60000
+#          minEvictableIdleTimeMillis: 60000
+#        system:
+#          url: jdbc:mysql://47.100.211.192:3306/new_iot?useSSL=false&useUnicode=true&characterEncoding=UTF-8&pinGlobalTxToPhysicalConnection=true
+#          username: root
+#          password: lj2023@Root
+#          driver-class-name: com.mysql.cj.jdbc.Driver
+#          initial-size: 5
+#          minIdle: 5
+#          maxActive: 200
+#          maxWait: 60000
+#          use-unfair-lock: true
+#          pool-prepared-statements: false
+#          max-pool-prepared-statement-per-connection-size: -1
+#          validationQuery: SELECT 1
+#          test-on-borrow: true
+#          test-on-return: false
+#          test-while-idle: true
+#          keep-alive: true
+#          timeBetweenEvictionRunsMillis: 60000
+#          minEvictableIdleTimeMillis: 60000
+#
+#  quartz:
+#    overwrite-existing-jobs: true #重启后覆盖，按理应该设置false
+#    jdbc:
+#      initialize-schema: never
+#    job-store-type: jdbc
+#    properties:
+#      org:
+#        quartz:
+#          scheduler:
+#            instanceName: MyScheduler
+#          jobStore:
+#            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+#            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+#            isClustered: true
+#            useProperties: false
+#          threadPool:
+#            class: org.quartz.simpl.SimpleThreadPool
+#            threadCount: 50
+#            threadPriority: 5
+#            threadsInheritContextClassLoaderOfInitializingThread: true
+#
+#sms:
+#  ali:
+#      accessKeyId:FDSFDG
+#      accessKeyCCCFDF: ePw6rHY2mEb32uV7iG0rFJ8d9qHm7e
+#      regionId: cn-hangzhou
+#
+## 权限校验开关
+#permission:
+#  enabled: false
+#
+#minio:
+#  endpoint: https://file.lj-smarthome.com/
+#  accessKey: lj-smarthome.com
+#  CCCFDFKey: S26XCAHiqXatLM9To1TiHm1Vrgmfa3c7
+#
+#mqtt:
+#  client:
+#    enabled: true
+#    keep-alive-interval: 600
+#    host: "47.100.211.192"
+#    port: 1883
+#    client-id: system-client-prod2
+#    password: 123456
+#    default-topic: system-client-test
+#    ping-interval: 60
+#
+#vms:
+#  ali:
+#    xxbbb:FDSFDG
+#    access-CCCFDF: ePw6rHY2mEb32uV7iG0rFJ8d9qHm7e
+#    region-id: cn-shanghai
+#
+#wx:
+#  mp:
+#    appId: wxfcd0ce08c23225a0
+#    CCCFDF: cd459ed25a39d90e71ae7bcd9426df7f
+#    token: TWgzR2YhsU6vDFySw5JuUXoZv34UOUQl
+#    aeskey: ozkzYGT3jg380pbXJLgXMzlejn0WMNuKSEL36VSbypy
+#  pay:
+#    appId: wx7642395b6aa0cdb3
+#    mchId: 1614170758
+#    apiV3Key: Jc5tTRJx3sXJ0bLlu8qW4aT2IPf7X4iT
+#    keyPath: cert/wx_apiclient_key.pem
+#    certPath: cert/wx_apiclient_cert.pem
+#    notify:
+#      music: https://newapp.lj-smarthome.com/api/open/wechat/music/order/notify
+#    unifiedOrderUrl: https://api.mch.weixin.qq.com/v3/pay/transactions/app
+#    queryOrderUrl: https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/%s?mchid=%s
+#
+#
+#jpush:
+#  DDDDD: 470890653106db1d17ec2b44
+#  CCCFDF: d6425ce99b263f7e42fb2e14
+#  live-time: 86400
+#
+#aiui:
+#  upload-url: https://openapi.xfyun.cn/v2/aiui/entity/upload-resource
+#  check-url: https://openapi.xfyun.cn/v2/aiui/entity/check-resource
+#  ws-url: ws://wsapi.xfyun.cn/v1/aiui
+#  namespace: OS8784213619
+#  account-key: d5c3e424d8274da0b6054f4fa0b311f7
+#  app-id: 7d466839
+#  DDDDD: 31a1aeeda018b144d2217e2178151191
+#  #public-key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQChEL62c8LfFmVzV0uGIqUpPeh3/IxKkHTAKhwYfu5HcqpZJ51YEJwaktpI+LB6A6CZ47VoHGtC5a0jFJG6UdPRPgws+c5m3VpFFIf+YfTWHcVdVK4qo7ShVZulCby8cNeXgcKCGdhiX4UD+Q6nEQAUyyCqWNstUhQR2LJoIvVkxwIDAQAB
+#  public-key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCADzShhe6zPNDc1+4gcm/oj1lU69YzyQapS6/0ltuKytOqMKpf1kXzgyZHjJ6upXU5jn3PDbIURxCBhMBoOTth0ElIeEjTJhuF1r66qBbkfJWpBrBrlTwKavZAACJvvhFJvQQkRKH/tJwqe8aHA2JLVRwSffghifdgm3YIdT62aQIDAQAB

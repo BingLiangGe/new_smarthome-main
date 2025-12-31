@@ -1,0 +1,83 @@
+#spring:
+#  application:
+#    name: hotel-api
+#  profiles:
+#    active: dev
+#  main:
+#    allow-bean-definition-overriding: true
+#    allow-circular-references: true
+#  http:
+#    multipart:
+#      max-file-size: 10MB
+#      max-request-size: 10MB
+#
+#server:
+#  port: 7776
+#  tomcat:
+#    accept-count: 200
+#    threads:
+#      min-spare: 16
+#
+#redis:
+#  cacheNames:
+#    param-config: 300
+#    product-type: 300
+#    common-cache: 300
+#
+#minio:
+#  endpoint: https://file.lj-smarthome.com/
+#  accessKey: lj-smarthome.com
+#  CCCFDFKey: S26XCAHiqXatLM9To1TiHm1Vrgmfa3c7
+#
+#sso:
+#  app: hotel  #应用名称   这个名字不要改，ws应用中需要这个字段鉴权
+#  exclude-login-path-patterns: /api/open/**,/actuator/**  #排除登录校验地址
+#
+#  expired: 604800  #登录过期时间（单位秒）
+#
+#management:
+#  endpoints:
+#    jmx:
+#      exposure:
+#        include: '*'
+#    web:
+#      exposure:
+#        include: '*'
+#    health:
+#      show-details: always
+#
+#logging:
+#  baseUrl: ''
+#  file:
+#    name: ${logging.baseUrl}logs/${spring.application.name}.log
+#  logback:
+#    rollingpolicy:
+#      max-file-size: 100MB
+#      file-name-pattern: ${logging.baseUrl}logs/${spring.application.name}-%d{yyyy-MM-dd}.%i.log
+#      max-history: 10
+#  level:
+#    com.lj.iot.biz.db.smart.mapper: ERROR
+#    java.sql: ERROR
+#    org.mybatis.spring: ERROR
+#    io:
+#      netty:
+#        channel:
+#          DefaultChannelPipeline: info
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/
+#  instance:
+#    prefer-ip-address: true
+#    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+#
+#
+#mybatis-plus:
+#  mapper-locations: classpath:/mapper/*/*.xml
+#  type-aliases-package: com.lj.iot.biz.db.*.entity
+#  global-config:
+#    db-config:
+#      id-type: auto
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

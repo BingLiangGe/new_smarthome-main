@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.SosContactMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.SosContact">
+        <id column="id" property="id" />
+        <result column="contact_type" property="contactType" />
+        <result column="user_id" property="userId" />
+        <result column="home_id" property="homeId" />
+        <result column="phone_number" property="phoneNumber" />
+        <result column="username" property="username" />
+    </resultMap>
+
+
+    <select id="customPage" resultMap="BaseResultMap">
+        select * from sos_contact
+        <where>
+            <if test="params.homeId != null">
+                AND home_id=#{params.homeId}
+            </if>
+            <if test="params.userId != null and params.userId!=''">
+                AND user_id=#{params.userId}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                phone_number LIKE CONCAT(#{params.search},"%")
+                OR username LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+</mapper>

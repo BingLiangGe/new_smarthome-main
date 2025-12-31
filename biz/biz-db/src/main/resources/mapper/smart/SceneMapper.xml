@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.SceneMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.Scene">
+        <id column="id" property="id"/>
+        <result column="home_id" property="homeId"/>
+        <result column="scene_name" property="sceneName"/>
+        <result column="scene_icon" property="sceneIcon"/>
+        <result column="user_id" property="userId"/>
+        <result column="command" property="command"/>
+        <result column="last_execution_time" property="lastExecutionTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="getHomeIdById" resultType="Long">
+        select home_id
+        from scene
+        where id = #{sceneId}
+    </select>
+    <select id="findByLastAction" resultType="com.lj.iot.biz.db.smart.entity.Scene">
+        SELECT * FROM scene WHERE home_id = #{homeId} ORDER BY last_execution_time DESC LIMIT 1
+    </select>
+
+    <select id="authList" resultType="com.lj.iot.biz.db.smart.entity.Scene">
+        SELECT a.id,
+               a.home_id,
+               IFNULL(st.`background_url`,a.scene_icon) sceneIcon,
+               a.scene_name,
+               a.user_id,
+               a.command,
+               a.last_execution_time,
+               a.create_time,
+               a.update_time,
+               count(b.cron) cron
+        FROM scene a
+                 LEFT JOIN (SELECT x.* FROM scene_schedule x WHERE x.enable = 1) b ON
+            a.id = b.scene_id
+                 LEFT JOIN  scene_template st ON  st.`name`=a.`scene_name`
+        where NOT EXISTS(SELECT c.id
+                         FROM home_user_device_no_auth c
+                         WHERE a.id = c.device_or_scene_id
+                           AND c.auth_type = 1
+                           and c.user_id = #{userId})
+          AND a.home_id = #{homeId}
+        group by a.id, a.home_id, a.scene_icon, a.scene_name, a.user_id, a.command, a.last_execution_time,
+                 a.create_time, a.update_time
+        order by a.create_time
+    </select>
+    <select id="findInSetMasterId" resultType="com.lj.iot.biz.db.smart.entity.Scene">
+
+        SELECT * FROM scene WHERE find_in_set(#{deviceId},master_id)
+    </select>
+</mapper>

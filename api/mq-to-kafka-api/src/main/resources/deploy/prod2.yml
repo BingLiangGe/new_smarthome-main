@@ -1,0 +1,204 @@
+spring:
+  application:
+    name: mq-to-kafka-api2
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  kafka:
+    #    bootstrap-servers: 192.168.2.39:9092,192.168.2.40:9092,192.168.2.41:9092
+    bootstrap-servers: 172.17.179.153:9092
+    #    bootstrap-servers: 39.108.225.127:9092,8.134.76.68:9092,8.134.135.112:9092
+    cloud:
+      stream:
+        default-binder: kafka #Default binder
+        bindings:
+          #缺省的输入、输出通道（配置自己定义的通道与哪个中间件交互）
+          service_login_token_reply-out-0:
+            destination: service_login_token_reply
+            binder: kafka
+            content-type: application/json
+          service_device_bind_reply-out-0:
+            destination: service_device_bind_reply
+            binder: kafka
+            content-type: application/json
+          event_sys_connected-out-0:
+            destination: event_sys_connected
+            binder: kafka
+            content-type: application/json
+          event_sys_disconnected-out-0:
+            destination: event_sys_disconnected
+            binder: kafka
+            content-type: application/json
+          event_sos-out-0:
+            destination: event_sos
+            binder: kafka
+            content-type: application/json
+          service_signal_study_repay-out-0:
+            destination: service_signal_study_repay
+            binder: kafka
+            content-type: application/json
+          service_properties_set_reply-out-0:
+            destination: service_properties_set_reply
+            binder: kafka
+            content-type: application/json
+          event_sub_device_line-out-0:
+            destination: event_sub_device_line
+            binder: kafka
+            content-type: application/json
+          event_topology_delete-out-0:
+            destination: event_topology_delete
+            binder: kafka
+            content-type: application/json
+          service_topology_add_reply-out-0:
+            destination: service_topology_add_reply
+            binder: kafka
+            content-type: application/json
+          service_topology_delete_reply-out-0:
+            destination: service_topology_delete_reply
+            binder: kafka
+            content-type: application/json
+          pub_device_hash-out-0:
+            destination: pub_device_hash
+            binder: kafka
+            content-type: application/json
+          service_music_change_reply-out-0:
+            destination: service_music_change_reply
+            binder: kafka
+            content-type: application/json
+          event_sub_device_offline-out-0:
+            destination: event_sub_device_offline
+            binder: kafka
+            content-type: application/json
+          event_sub_device_network-out-0:
+            destination: event_sub_device_network
+            binder: kafka
+            content-type: application/json
+          pub_sub_sub_device-out-0:
+            destination: pub_sub_sub_device
+            binder: kafka
+            content-type: application/json
+          event_sub_device_bind_success-out-0:
+            destination: event_sub_device_bind_success
+            binder: kafka
+            content-type: application/json
+          service_topology_ota_reply-out-0:
+            destination: service_topology_ota_reply
+            binder: kafka
+            content-type: application/json
+          service_mesh_unbind_reply-out-0:
+            destination: service_mesh_unbind_reply
+            binder: kafka
+            content-type: application/json
+          event_topology_list-out-0:
+            destination: event_topology_list
+            binder: kafka
+            content-type: application/json
+          event_sub_device_register-out-0:
+            destination: event_sub_device_register
+            binder: kafka
+            content-type: application/json
+          event_device_hash-out-0:
+            destination: event_device_hash
+            binder: kafka
+            content-type: application/json
+          event_properties_post-out-0:
+            destination: event_properties_post
+            binder: kafka
+            content-type: application/json
+          signal_set_reply-out-0:
+            destination: signal_set_reply
+            binder: kafka
+            content-type: application/json
+          property_bind_reply-out-0:
+            destination: property_bind_reply
+            binder: kafka
+            content-type: application/json
+          topology_notify_reply-out-0:
+            destination: topology_notify_reply
+            binder: kafka
+            content-type: application/json
+          device_no_exist_reply-out-0:
+            destination: device_no_exist_reply
+            binder: kafka
+            content-type: application/json
+          lock-out-0:
+            destination: lock
+            binder: kafka
+            content-type: application/json
+          event_sub_player_reply-out-0:
+            destination: event_sub_player_reply
+            binder: kafka
+            content-type: application/json
+          #告警的输入、输出通道（多主题、分组测试用，实际开发中根据业务需求定义）
+          #        es_alarm_output:
+          #          destination: es_alarm_topic
+          #          binder: kafka
+          #          content-type: text/plain
+          #kafka配置
+        kafka:
+          binder:
+            autoCreateTopics: true   # 自动创建topics
+            autoAddPartitions: true
+            replicationFactor: 2
+            brokers: ${spring.kafka.bootstrap-servers}  #Kafka的服务端列表，cm02为集群节点，在本地host配置，这里替换成你的IP即可
+            zkNodes: 172.17.179.153:2181  #Kafka服务端连接的ZooKeeper节点列表
+            #          zkNodes: 39.108.225.127:2181,8.134.76.68:2181,8.134.135.112：2181  #Kafka服务端连接的ZooKeeper节点列表
+            #          zkNodes: 192.168.2.39:2181,192.168.2.40:2181,192.168.2.41:2181
+            requiredAcks: 1
+server:
+  port: 6002
+
+
+logging:
+  baseUrl: ''
+  file:
+    name: ${logging.baseUrl}logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 50MB
+      file-name-pattern: ${logging.baseUrl}logs/${spring.application.name}-%d{yyyy-MM-dd}.%i.log
+      max-history: 10
+  level:
+    io:
+      netty:
+        channel:
+          DefaultChannelPipeline: info
+
+mqtt:
+  client:
+    enabled: true
+    keep-alive-interval: 600
+    host: "172.17.179.154"
+    port: 1883
+    client-id: mq-to-kafka-api-prod12
+    password: 123456
+    default-topic:
+      - $SYS/brokers/+/clients/+/connected #主控上线
+      - $SYS/brokers/+/clients/+/disconnected #主控离线
+      - $share/group/sys/+/+/thing/event/sos/post  # 求救上报
+      - $share/group/sys/+/+/thing/service/signal/set_reply #信号控制下发回复
+      - $share/group/sys/+/+/thing/service/signal/study_reply #学码数据回复
+      - $share/group/sys/+/+/thing/service/property/bind_reply #设备属性[按键]绑定操作下发
+      - $share/group/sys/+/+/thing/event/property/post #设备上报属性
+      - $share/group/sys/+/+/thing/event/device/hash #设备hash
+      - $share/group/sys/+/+/thing/service/property/set_reply # 设置设备属性回复
+      - $share/group/sys/+/+/thing/event/register #子设备的MQTT动态注册
+      - $share/group/sys/+/+/thing/event/topology/delete #网关删除设备的拓扑关系
+      - $share/group/sys/+/+/thing/service/topology/add_reply #云端新增设备的拓扑关系回复
+      - $share/group/sys/+/+/thing/service/topology/delete_reply # 云端删除设备的拓扑关系回复
+      - $share/group/sys/+/+/thing/service/topology/notify_reply #通知网关topology关系回复
+      - $share/group/sys/+/+/thing/event/topology/list # 网关获取topology关系
+      - $share/group/sys/+/+/thing/event/topology/line # 上报子设备在线状态
+      - $share/group/sys/+/+/thing/service/device/no_exist_reply #设备不存在
+      - $share/group/sys/+/+/thing/service/topology/mesh/unbind_reply #未绑定蓝牙设备列表
+      - $share/group/sys/+/+/thing/service/topology/ota_reply #OTA返回
+      - $share/group/sys/+/+/thing/service/device/bind_reply #设备绑定
+      - $share/group/sys/+/+/thing/service/login/token_reply #设备绑定
+      - $share/group/sys/+/+/thing/service/device/hash #设备绑定
+      - $share/group/sys/+/+/thing/service/music/change_reply #音乐返回
+      - $share/group/sys/+/+/thing/event/offline/code #设备红外离线码
+      - $share/group/sys/+/+/thing/event/topology/network #设备配网成功上报网络信息
+      - $share/group/sys/+/+/thing/event/topology/bind_success #设备绑定成功上报版本
+      - $share/group/sys/+/+/thing/service/topology/subdevice #查询子设备数据
+      - $share/group/sys/+/+/thing/service/device/lock_reply #设备锁定状态上报
+    ping-interval: 60

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.HotelMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.HotelMenu">
+        <id column="menu_id" property="menuId"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="name" property="name"/>
+        <result column="url" property="url"/>
+        <result column="perms" property="perms"/>
+        <result column="type" property="type"/>
+        <result column="icon" property="icon"/>
+        <result column="order_num" property="orderNum"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        menu_id
+        , parent_id, name, url, perms, type, icon, order_num
+    </sql>
+
+    <select id="mainNav" resultMap="BaseResultMap">
+        select *
+        from hotel_menu
+        where type in (0, 1)
+    </select>
+
+    <select id="roleNav" resultMap="BaseResultMap">
+        select hm.*
+        from hotel_menu hm
+                 inner join hotel_role_menu hrm on hm.menu_id = hrm.menu_id
+        where hrm.role_id = #{roleId}
+          and hm.type in (0, 1)
+    </select>
+
+    <select id="mainMenu" resultMap="BaseResultMap">
+        select *
+        from hotel_menu
+    </select>
+
+    <select id="roleMenu" resultMap="BaseResultMap">
+        select hm.*
+        from hotel_menu hm
+                 inner join hotel_role_menu hrm on hm.menu_id = hrm.menu_id
+        where hrm.role_id = #{roleId}
+    </select>
+
+    <select id="queryMenuIdList" resultType="Long">
+        select menu_id from hotel_role_menu where role_id = #{roleId}
+    </select>
+</mapper>

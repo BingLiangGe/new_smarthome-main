@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.HomeRoomMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.HomeRoom">
+        <id column="id" property="id"/>
+        <result column="home_id" property="homeId"/>
+        <result column="room_name" property="roomName"/>
+        <result column="user_id" property="userId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="customPage" resultMap="BaseResultMap">
+        select * from home_room
+        <where>
+            <if test="params.homeId != null">
+                AND home_id=#{params.homeId}
+            </if>
+            <if test="params.userId != null">
+                AND user_id=#{params.userId}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND room_name LIKE CONCAT(#{params.search},"%")
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="setIdByHomeIdAndHomeName" resultType="java.lang.Long">
+        select id
+        from home_room
+        where home_id = #{homeId}
+          and room_name = #{roomName}
+    </select>
+
+    <select id="countHomeRoomByCondition" resultType="java.lang.Boolean">
+        SELECT
+        count(*)
+        FROM
+        home_room
+        WHERE
+        home_id = #{params.homeId} and user_id=#{params.userId} and room_name=#{params.roomName}
+        <if test="params.id !=null">
+            and id=#{params.id}
+        </if>
+    </select>
+
+    <select id="first" resultMap="BaseResultMap">
+        select *
+        from home_room
+        where home_id = #{homeId}
+          and user_id = #{userId} limit 1
+    </select>
+
+    <select id="customList" resultMap="BaseResultMap">
+        select *
+        from home_room
+        where home_id = #{homeId}
+    </select>
+    <select id="customListByHomeIdAndUserId" resultMap="BaseResultMap">
+        select *
+        from home_room
+        where home_id = #{homeId}
+          and user_id = #{userId}
+    </select>
+    <select id="findListByHomeIdAndRoomId" resultMap="BaseResultMap">
+        select *
+        from home_room
+        where home_id = #{homeId}
+          and id = #{room_id}
+    </select>
+</mapper>

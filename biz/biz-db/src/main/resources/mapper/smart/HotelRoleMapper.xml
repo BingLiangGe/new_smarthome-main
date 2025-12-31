@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.HotelRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.HotelRole">
+        <id column="role_id" property="roleId" />
+        <result column="hotel_id" property="hotelId" />
+        <result column="role_name" property="roleName" />
+        <result column="remark" property="remark" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        role_id, hotel_id, role_name, remark, create_user_id, create_time
+    </sql>
+
+    <select id="customPage" resultMap="BaseResultMap">
+        select * from hotel_role
+        <where>
+            <if test="hotelId!=null">
+                AND hotel_id = #{hotelId}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                role_name LIKE CONCAT(#{params.search},"%")
+                or remark LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+        ORDER BY role_id DESC
+    </select>
+
+</mapper>

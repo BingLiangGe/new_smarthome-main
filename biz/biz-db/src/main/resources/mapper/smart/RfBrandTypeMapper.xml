@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.RfBrandTypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.RfBrandType">
+        <id column="id" property="id" />
+        <result column="device_type_id" property="deviceTypeId" />
+        <result column="brand_id" property="brandId" />
+        <result column="brand_name" property="brandName" />
+        <result column="first_letter" property="firstLetter" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, device_type_id, brand_id, brand_name, first_letter
+    </sql>
+
+    <select id="customPage" resultMap="BaseResultMap">
+        SELECT * FROM rf_brand_type
+        <where>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                brand_name LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.DeviceUpgradeLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.DeviceUpgradeLog">
+        <id column="id" property="id" />
+        <result column="product_id" property="productId" />
+        <result column="device_id" property="deviceId" />
+        <result column="old_version" property="oldVersion" />
+        <result column="new_version" property="newVersion" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, product_id, device_id, old_version, new_version, start_time, end_time, status, create_time, update_time
+    </sql>
+
+
+    <select id="customPage" resultMap="BaseResultMap">
+        select * from device_upgrade_log
+        <where>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                 product_id LIKE CONCAT(#{params.search},"%")
+                OR device_id LIKE CONCAT(#{params.search},"%")
+                OR old_version LIKE CONCAT(#{params.search},"%")
+                OR new_version LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+    </select>
+</mapper>

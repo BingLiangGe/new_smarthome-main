@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.SceneDeviceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.SceneDevice">
+        <id column="id" property="id"/>
+        <result column="scene_id" property="sceneId"/>
+        <result column="product_type" property="productType"/>
+        <result column="device_id" property="deviceId"/>
+        <result column="thing_model" property="thingModel" javaType="com.lj.iot.common.base.dto.ThingModel"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMap2" type="com.lj.iot.biz.db.smart.entity.SceneDevice">
+        <id column="id" property="id"/>
+        <result column="scene_id" property="sceneId"/>
+        <result column="product_type" property="productType"/>
+        <result column="device_id" property="deviceId"/>
+        <result column="custom_name" property="customName"/>
+        <result column="signal_type" property="signalType"/>
+        <result column="room_name" property="roomName"/>
+        <result column="thing_model" property="thingModel" javaType="com.lj.iot.common.base.dto.ThingModel"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="delayed" property="delayed"/>
+    </resultMap>
+
+    <select id="listDeviceIds" resultType="String">
+        select device_id deviceId
+        from scene_device
+        where scene_id = #{sceneId}
+    </select>
+    <select id="listSceneDevice" resultMap="BaseResultMap2">
+        SELECT sd.*,
+               hr.room_name,
+               ud.signal_type,
+               ud.custom_name
+        FROM scene_device sd
+                 inner join user_device ud ON sd.device_id = ud.device_id
+                 inner join home_room hr ON ud.room_id = hr.id
+        WHERE sd.scene_id = #{sceneId}
+    </select>
+</mapper>

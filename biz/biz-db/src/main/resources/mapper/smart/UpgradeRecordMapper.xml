@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.UpgradeRecordMapper">
+
+    <select id="findUpgradeRecordByNotSuccess" resultType="com.lj.iot.biz.db.smart.entity.UpgradeRecord">
+        SELECT ur.id,
+               ur.`device_id`,
+               ur.`file_path`,
+               ur.`soft_ware_version`,
+               ur.`is_success`,
+               ur.`create_time`,
+               ur.`success_time`,
+               ur.success_count
+        FROM upgrade_record ur
+        WHERE ur.device_id = #{deviceId}
+          AND ur.`soft_ware_version` &gt; #{softWareVersion}
+          and ur.hard_ware_version=#{hardWareVersion}
+        ORDER BY ur.`soft_ware_version` DESC LIMIT 1;
+    </select>
+</mapper>

@@ -1,0 +1,1 @@
+package com.lj.iot.biz.db.smart.mapper;import com.baomidou.mybatisplus.core.mapper.BaseMapper;import com.lj.iot.biz.db.smart.entity.ScenePublicIcon;public interface ScenePublicIconMapper extends BaseMapper<ScenePublicIcon> {}

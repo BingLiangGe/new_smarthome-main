@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.HotelFloorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.HotelFloor">
+        <id column="id" property="id" />
+        <result column="hotel_user_id" property="hotelUserId" />
+        <result column="hotel_id" property="hotelId" />
+        <result column="floor_name" property="floorName" />
+        <result column="remarks" property="remarks" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, hotel_user_id, hotel_id, floor_name, remarks, create_time, update_time
+    </sql>
+
+</mapper>

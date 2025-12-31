@@ -1,0 +1,30 @@
+package com.lj.iot.biz.base.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+/**
+ * @author mz
+ * @Date 2022/7/19
+ * @since 1.0.0
+ */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SceneCopyDto {
+
+    /**
+     * 场景 ID
+     */
+    @NotNull(message = "场景ID不能为空")
+    private Long sceneId;
+
+    @NotNull(message = "家庭ID")
+    private List<Long> homeIds;
+}

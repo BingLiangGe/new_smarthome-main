@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "spring.datasource.dynamic.primary",
+      "type": "java.lang.String",
+      "description": "Description for spring.datasource.dynamic.primary."
+  }
+] }

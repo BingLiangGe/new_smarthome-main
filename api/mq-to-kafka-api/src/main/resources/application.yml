@@ -1,0 +1,35 @@
+#spring:
+#  application:
+#    name: mq-to-kafka-api
+#  profiles:
+#    active: test
+#  main:
+#    allow-bean-definition-overriding: true
+#    allow-circular-references: true
+#
+#server:
+#  port: 6002
+#
+#
+#logging:
+#  baseUrl: ''
+#  file:
+#    name: ${logging.baseUrl}logs/${spring.application.name}.log
+#  logback:
+#    rollingpolicy:
+#      max-file-size: 50MB
+#      file-name-pattern: ${logging.baseUrl}logs/${spring.application.name}-%d{yyyy-MM-dd}.%i.log
+#      max-history: 10
+#  level:
+#    io:
+#      netty:
+#        channel:
+#          DefaultChannelPipeline: info
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://127.0.0.1:8761/eureka/
+#  instance:
+#    prefer-ip-address: true
+#    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}-xieb

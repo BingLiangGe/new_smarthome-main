@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.ProductUpgradeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.ProductUpgrade">
+        <id column="id" property="id" />
+        <result column="product_id" property="productId" />
+        <result column="version_url" property="versionUrl" />
+        <result column="old_version" property="oldVersion" />
+        <result column="new_version" property="newVersion" />
+        <result column="plan_count" property="planCount" />
+        <result column="success_count" property="successCount" />
+        <result column="failure_count" property="failureCount" />
+        <result column="valid" property="valid" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, product_id, version_url, old_version, new_version, plan_count, success_count, failure_count, valid, create_time, update_time
+    </sql>
+    <select id="newPage" resultType="com.lj.iot.biz.db.smart.entity.ProductUpgrade">
+        SELECT * FROM product_upgrade
+        <where>
+            <if test="params.productId != null">
+                product_id = #{params.productId}
+            </if>
+
+
+        </where>
+
+    </select>
+    <select id="findByMaxId" resultType="com.lj.iot.biz.db.smart.entity.ProductUpgrade">
+
+        SELECT * from product_upgrade WHERE product_id = #{productId} AND id  = (SELECT MAX(id) from product_upgrade WHERE product_id = #{productId})
+
+    </select>
+
+
+    <select id="productUpgradePageLimit" resultType="com.lj.iot.biz.db.smart.entity.ProductUpgrade">
+        SELECT
+        pu.`id`,
+        pu.`version_url`,
+        pu.`old_version`,
+        pu.new_version,
+        pu.`create_time`,
+        pu.`upde_package_name`,
+        pu.`upde_package_details`,
+        pu.`hard_ware_version`,
+        p.`images_url`,
+        pu.product_id,
+        p.`product_name`
+        FROM
+        product_upgrade pu
+        LEFT JOIN product p ON p.`product_id`=pu.`product_id`
+        <where>
+            <if test="upgrade.productId != null and upgrade.productId != ''">
+                and pu.product_id=#{upgrade.productId}
+            </if>
+            <if test="upgrade.hardWareVersion != null and upgrade.hardWareVersion != ''">
+                and pu.hard_ware_version=#{upgrade.hardWareVersion}
+            </if>
+            <if test="upgrade.hardWareVersion == ''">
+                and pu.hard_ware_version!=1.1
+            </if>
+        </where>
+        ORDER BY pu.`create_time` desc
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="productUpgradePageLimitCount" resultType="java.lang.Integer">
+        SELECT
+         count(1)
+        FROM
+        product_upgrade pu
+        LEFT JOIN product p ON p.`product_id`=pu.`product_id`
+        <where>
+            <if test="upgrade.productId != null and upgrade.productId != ''">
+                and pu.product_id=#{upgrade.productId}
+            </if>
+            <if test="upgrade.hardWareVersion != null and upgrade.hardWareVersion != ''">
+                and pu.hard_ware_version=#{upgrade.hardWareVersion}
+            </if>
+            <if test="upgrade.hardWareVersion == ''">
+                and pu.hard_ware_version!=1.1
+            </if>
+        </where>
+        ORDER BY pu.`create_time`
+    </select>
+
+</mapper>

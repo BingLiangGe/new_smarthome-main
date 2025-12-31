@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.UserDeviceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.UserDevice">
+        <id column="device_id" property="deviceId"/>
+        <result column="product_id" property="productId"/>
+        <result column="real_product_type" property="realProductType"/>
+        <result column="top_product_type" property="topProductType"/>
+        <result column="product_type" property="productType"/>
+        <result column="device_name" property="deviceName"/>
+        <result column="custom_name" property="customName"/>
+        <result column="user_id" property="userId"/>
+        <result column="home_id" property="homeId"/>
+        <result column="room_id" property="roomId"/>
+        <result column="brand_id" property="brandId"/>
+        <result column="brand_name" property="brandName"/>
+        <result column="master_device_id" property="masterDeviceId"/>
+        <result column="master_product_id" property="masterProductId"/>
+        <result column="model_id" property="modelId"/>
+        <result column="model_name" property="modelName"/>
+        <result column="signal_type" property="signalType"/>
+        <result column="thing_model" property="thingModel" javaType="com.lj.iot.common.base.dto.ThingModel"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler"/>
+        <result column="handler_time" property="handlerTime"/>
+        <result column="status" property="status"/>
+        <result column="status_time" property="statusTime"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="physical_device_id" property="physicalDeviceId"/>
+        <result column="is_show" property="isShow"/>
+        <result column="is_show_scene" property="isShowScene"/>
+        <result column="images_url" property="imagesUrl"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="lock_CCCFDF" property="lockCCCFDF"/>
+        <result column="lock_auth_code" property="lockAuthCode"/>
+    </resultMap>
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="UserDeviceAuthVoResultMap" type="com.lj.iot.biz.base.vo.UserDeviceVo">
+        <id column="device_id" property="deviceId"/>
+        <result column="product_id" property="productId"/>
+        <result column="master_device_id" property="masterDeviceId"/>
+        <result column="product_type" property="productType"/>
+        <result column="top_product_type" property="topProductType"/>
+        <result column="device_name" property="deviceName"/>
+        <result column="custom_name" property="customName"/>
+        <result column="signal_type" property="signalType"/>
+        <result column="room_name" property="roomName"/>
+        <result column="thing_model" property="thingModel" javaType="com.lj.iot.common.base.dto.ThingModel"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler"/>
+        <result column="images_url" property="imagesUrl"/>
+        <result column="physical_device_id" property="physicalDeviceId"/>
+        <result column="status" property="status"/>
+        <result column="group_id" property="groupId"/>
+        <result column="room_id" property="roomId"/>
+        <result column="lock_CCCFDF" property="lockCCCFDF"/>
+        <result column="lock_auth_code" property="lockAuthCode"/>
+    </resultMap>
+
+    <select id="customPage" resultMap="BaseResultMap">
+        SELECT * FROM user_device
+        <where>
+            <if test="params.userId != null and params.userId!=''">
+                AND user_id=#{params.userId}
+            </if>
+            <if test="params.homeId != null">
+                AND home_id=#{params.homeId}
+            </if>
+            <if test="params.roomId != null">
+                AND room_id=#{params.roomId}
+            </if>
+            <if test="params.masterDeviceId!=null and params.masterDeviceId!=''">
+                AND master_device_id=#{params.masterDeviceId}
+            </if>
+            <if test="params.signalType!=null and params.signalType!=''">
+                AND signal_type=#{params.signalType}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                device_name LIKE CONCAT(#{params.search},"%")
+                or device_id LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="online" resultType="Integer">
+        SELECT count(1) FROM user_device
+        <where>
+            <if test="params.userId != null and params.userId!=''">
+                AND user_id=#{params.userId}
+            </if>
+            <if test="params.homeId != null">
+                AND home_id=#{params.homeId}
+            </if>
+            <if test="params.roomId != null">
+                AND room_id=#{params.roomId}
+            </if>
+            <if test="params.masterDeviceId!=null and params.masterDeviceId!=''">
+                AND master_device_id=#{params.masterDeviceId}
+            </if>
+            <if test="params.signalType!=null and params.signalType!=''">
+                AND signal_type=#{params.signalType}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                device_name LIKE CONCAT(#{params.search},"%")
+                or device_id LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+            AND status=true
+        </where>
+    </select>
+
+    <select id="offline" resultType="Integer">
+        SELECT count(1) FROM user_device
+        <where>
+            <if test="params.userId != null and params.userId!=''">
+                AND user_id=#{params.userId}
+            </if>
+            <if test="params.homeId != null">
+                AND home_id=#{params.homeId}
+            </if>
+            <if test="params.roomId != null">
+                AND room_id=#{params.roomId}
+            </if>
+            <if test="params.masterDeviceId!=null and params.masterDeviceId!=''">
+                AND master_device_id=#{params.masterDeviceId}
+            </if>
+            <if test="params.signalType!=null and params.signalType!=''">
+                AND signal_type=#{params.signalType}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                device_name LIKE CONCAT(#{params.search},"%")
+                or device_id LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+            AND status=false
+        </where>
+    </select>
+
+    <select id="customShowPage" resultMap="UserDeviceAuthVoResultMap">
+        SELECT
+        a.device_name ,
+        a.custom_name ,
+        a.model_id,
+        a.master_device_id,
+        a.device_id ,
+        a.images_url ,
+        a.product_id ,
+        a.product_type ,
+        a.top_product_type ,
+        a.signal_type ,
+        b.room_name ,
+        a.group_id,
+        a.thing_model,
+        a.status,
+        a.physical_device_id,
+        a.room_id,
+        a.is_del,
+        a.lock_CCCFDF,
+        a.lock_auth_code
+        FROM
+        user_device a
+        LEFT JOIN home_room b ON a.room_id = b.id
+        left join product p on p.product_id=a.product_id
+        WHERE
+        NOT EXISTS ( SELECT c.id FROM home_user_device_no_auth c WHERE a.device_id = c.device_or_scene_id AND
+        c.auth_type = 1 and c.user_id=#{params.userId} )
+        AND a.is_show = TRUE
+        <if test="params.homeId != null">
+            AND a.home_id=#{params.homeId}
+        </if>
+        <if test="params.roomId != null">
+            AND a.room_id=#{params.roomId}
+        </if>
+        <if test="params.search!=null and params.search!=''">
+            AND concat(a.custom_name,a.device_id) LIKE CONCAT("%",#{params.search},"%")
+        </if>
+        order by a.create_time desc
+    </select>
+
+
+    <select id="customShowPage3326" resultMap="UserDeviceAuthVoResultMap">
+        SELECT
+        a.device_name ,
+        a.custom_name ,
+        a.model_id,
+        a.master_device_id,
+        a.device_id ,
+        a.images_url ,
+        a.product_id ,
+        a.product_type ,
+        a.top_product_type ,
+        a.signal_type ,
+        b.room_name ,
+        a.group_id,
+        a.thing_model,
+        a.status,
+        a.physical_device_id,
+        a.room_id,
+        a.is_del,
+        a.lock_CCCFDF,
+        a.lock_auth_code
+        FROM
+        user_device a
+        LEFT JOIN home_room b ON a.room_id = b.id
+        left join product p on p.product_id=a.product_id
+        WHERE
+        NOT EXISTS ( SELECT c.id FROM home_user_device_no_auth c WHERE a.device_id = c.device_or_scene_id AND
+        c.auth_type = 1 and c.user_id=#{params.userId} )
+        AND a.is_show = TRUE
+        AND a.`master_product_id`='1000000100';
+        <if test="params.homeId != null">
+            AND a.home_id=#{params.homeId}
+        </if>
+        <if test="params.roomId != null">
+            AND a.room_id=#{params.roomId}
+        </if>
+        <if test="params.search!=null and params.search!=''">
+            AND concat(a.custom_name,a.device_id) LIKE CONCAT("%",#{params.search},"%")
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <select id="listBySetRoomId" resultType="com.lj.iot.biz.base.vo.UserDeviceFilterVo">
+        SELECT
+        device_id ,
+        product_type,
+        device_name,
+        custom_name,
+        status
+        FROM
+        user_device
+        <where>
+            <if test="roomIdSet != null">
+                room_id in
+                <foreach item="item" index="index" collection="roomIdSet"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="listByMasterDeviceId" resultType="com.lj.iot.biz.base.vo.UserDeviceFilterVo">
+        SELECT
+        device_id ,
+        product_type,
+        device_name,
+        custom_name,
+        status
+        FROM
+        user_device
+        <where>
+            <if test="masterDeviceId != null and masterDeviceId!=''">
+                master_device_id=#{masterDeviceId}
+            </if>
+        </where>
+    </select>
+
+    <select id="listByHomeId" resultType="com.lj.iot.biz.base.vo.UserDeviceFilterVo">
+        SELECT
+        device_id ,
+        product_type,
+        device_name,
+        custom_name,
+        status
+        FROM
+        user_device
+        <where>
+            <if test="homeId != null and homeId!=''">
+                home_id=#{homeId}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="showSceneList" resultMap="UserDeviceAuthVoResultMap">
+        SELECT
+        a.model_id,
+        a.device_name ,
+        a.custom_name ,
+        a.device_id ,
+        a.images_url ,
+        a.product_id ,
+        a.product_type ,
+        a.top_product_type ,
+        a.signal_type ,
+        b.room_name ,
+        a.thing_model ,
+        a.physical_device_id,
+        a.group_id ,
+        a.status
+        FROM
+        user_device a
+        LEFT JOIN home_room b ON a.room_id = b.id
+        left join product p on p.product_id=a.product_id
+        WHERE
+        a.is_show = TRUE
+        AND a.is_show_scene=TRUE
+        <if test="roomId != null">
+            AND a.room_id=#{roomId}
+        </if>
+        <if test="homeId != null">
+            AND a.home_id=#{homeId}
+        </if>
+        order by a.group_id desc,room_id
+    </select>
+
+    <select id="getHomeIdById" resultType="Long">
+        SELECT home_id
+        FROM user_device
+        WHERE device_id = #{deviceId}
+    </select>
+
+
+    <select id="listEnableBindDevice" resultMap="BaseResultMap">
+        SELECT *
+        FROM user_device
+        WHERE master_device_id = #{masterDeviceId}
+        and signal_type in ("INVENTED", "MESH")
+        and is_show = true
+        and is_show_scene = true
+        <if test="deviceIds != null">
+            AND device_id in
+            <foreach collection="deviceIds" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="userId !=null and userId!=''">
+            AND user_id=#{userId}
+        </if>
+    </select>
+    <select id="getDeviceWsData" resultType="com.lj.iot.biz.base.vo.DeviceWsVo">
+        SELECT a.custom_name,
+               a.device_id,
+               b.home_name,
+               c.room_name,
+               d.mobile
+        FROM user_device a
+                 LEFT JOIN home b ON a.home_id = b.id
+                 LEFT JOIN home_room c ON a.room_id = c.id
+                 LEFT JOIN user_account d ON a.user_id = d.id
+        WHERE a.device_id = #{deviceId}
+    </select>
+    <select id="findBySumStatus" resultType="java.lang.Long">
+
+        SELECT IFNULL(sum(status), 0) AS status
+        FROM user_device
+        WHERE home_id = #{homeId}
+          AND device_id <![CDATA[<>]]> master_device_id
+          AND is_show = TRUE
+
+    </select>
+
+    <select id="findGroupId" resultType="com.lj.iot.biz.db.smart.entity.UserDevice">
+
+        SELECT *
+        FROM user_device
+        WHERE group_id IS NOT NULL
+          AND group_id <![CDATA[<>]]> ''
+          AND master_device_id = #{gatway}
+        GROUP BY group_id
+    </select>
+
+    <select id="getHotelWechatUserDeviceList" resultMap="BaseResultMap">
+        SELECT *
+        FROM user_device
+        WHERE home_id = #{iotRoomId}
+          and is_show = true
+    </select>
+
+    <select id="getRoomUserDevicePage4App" resultType="com.lj.iot.biz.base.vo.UserDeviceVo">
+        SELECT `device_id`, `product_id`, `product_type`, `real_product_type`, `top_product_type`, `device_name`,
+        `custom_name`, `user_id`, `home_id`, `room_id`, `group_id`, `brand_id`, `brand_name`, `master_device_id`,
+        `master_product_id`, `model_id`, `model_name`, `signal_type`, `thing_model`, `handler_time`, `status`,
+        `status_time`, `parent_id`, `physical_device_id`, `is_show`, `images_url`, `create_time`, `update_time`,
+        `control_device_id`, `control_product_id`, `is_show_scene`, `is_del`, `hard_ware_version`, `soft_ware_version`,
+        `bluetooth_version`, `door_pwd`, `saturation`, `hue`, `message_time`,lock_CCCFDF,
+        lock_auth_code
+        from user_device where room_id=#{params.iotRoomId} and (is_del=0 or is_del is NULL)
+        <if test="params.masterDeviceIds !=null and params.masterDeviceIds.size>0">
+            and master_device_id in
+            <foreach collection="params.masterDeviceIds" item="masterDeviceId" open="(" separator="," close=")">
+                #{masterDeviceId}
+            </foreach>
+        </if>
+        order by device_name desc
+    </select>
+
+
+    <select id="findUserDeviceWithOtaLimit" resultType="com.lj.iot.biz.db.smart.entity.UserDevice">
+        SELECT
+        ud.`device_id`,p.`product_name`,p.`create_time`,ud.`hard_ware_version`
+        FROM user_device ud
+        LEFT JOIN product p ON p.`product_id`=ud.`product_id`
+        <where>
+            <if test="userDevice.productId != null and userDevice.productId != ''">
+                and ud.product_id=#{userDevice.productId}
+            </if>
+            <if test="userDevice.hardWareVersion != null and userDevice.hardWareVersion != ''">
+                and ud.hard_ware_version=#{userDevice.hardWareVersion}
+            </if>
+            <if test="userDevice.deviceId != null and userDevice.deviceId != ''">
+                and ud.device_id like concat('%',#{userDevice.deviceId},'%')
+            </if>
+        </where>
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="findUserDeviceWithOtaLimitCount" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM user_device ud
+        LEFT JOIN product p ON p.`product_id`=ud.`product_id`
+        <where>
+            <if test="userDevice.productId != null and userDevice.productId != ''">
+                and ud.product_id=#{userDevice.productId}
+            </if>
+            <if test="userDevice.hardWareVersion != null and userDevice.hardWareVersion != ''">
+                and ud.hard_ware_version=#{userDevice.hardWareVersion}
+            </if>
+            <if test="userDevice.deviceId != null and userDevice.deviceId != ''">
+                and ud.device_id like concat('%',#{userDevice.deviceId},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="findHotelDevicePageLimit" resultType="com.lj.iot.biz.db.smart.entity.UserDevice">
+        SELECT
+        ud.`device_id`,
+        p.`product_name`,
+        ud.`device_name`,
+        ud.`images_url`,
+        ud.`create_time`,
+        ud.`status_time`,
+        ud.`hard_ware_version`,
+        ud.`soft_ware_version`
+        FROM
+        user_device ud
+        LEFT JOIN product p
+        ON p.`product_id` = ud.`product_id`
+        <where>
+            <if test="userDevice.productId != null and userDevice.productId != ''">
+                and ud.product_id =#{userDevice.productId}
+            </if>
+            <if test="userDevice.deviceId != null and userDevice.deviceId != ''">
+                and ud.device_id like concat('%',#{userDevice.deviceId},'%')
+            </if>
+            <if test="userDevice.userId != null and userDevice.userId != ''">
+                and ud.user_id =#{userDevice.userId}
+            </if>
+        </where>
+        order by ud.create_time desc
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="findHotelDevicePageCount" resultType="java.lang.Integer">
+
+        SELECT
+        count(1)
+        FROM
+        user_device ud
+        LEFT JOIN product p
+        ON p.`product_id` = ud.`product_id`
+        <where>
+            <if test="userDevice.productId != null and userDevice.productId != ''">
+                and ud.product_id =#{userDevice.productId}
+            </if>
+            <if test="userDevice.deviceId != null and userDevice.deviceId != ''">
+                and ud.device_id like concat('%',#{userDevice.deviceId},'%')
+            </if>
+            <if test="userDevice.userId != null and userDevice.userId != ''">
+                and ud.user_id =#{userDevice.userId}
+            </if>
+        </where>
+    </select>
+    <select id="findWatchInfo" resultType="com.lj.iot.biz.base.vo.WatchInfoVo">
+        SELECT
+            ud.`device_id`,
+            ud.`thing_model`,
+            ud.`latitude`,
+            ud.`longitude`,
+            ud.`heart_rate`,
+            ud.custom_name,
+            ud.`temperature`,
+            ud.`blood_oxygen`,
+            ud.`blood_pressure`,
+            ud.room_id,
+            ud.`address`,
+            ud.radius,
+            p.`images_url`,
+            ud.watch_status,
+            ud.`status`,
+            ud.`longitude`  setting_lng,
+            ud.`latitude`  setting_lat,
+            hr.`room_name`,
+            concat('1.0') version,
+            (SELECT COUNT(1) FROM watch_mobile WHERE device_id=ud.`device_id`) bindCount
+        FROM
+            user_device ud
+                LEFT JOIN home_room hr ON hr.`id`=ud.`room_id`
+                LEFT JOIN product p ON p.`product_id`=ud.`product_id`
+        WHERE ud.`device_id` = #{deviceId}
+    </select>
+
+</mapper>

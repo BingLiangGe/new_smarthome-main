@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>parent</artifactId>
+        <groupId>com.lj.iot</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <modules>
+        <module>common-base</module>
+        <module>common-util</module>
+        <module>common-redis</module>
+        <module>common-sso</module>
+        <module>common-jwt</module>
+        <module>common-db-generator</module>
+        <module>common-sms</module>
+        <module>common-quartz</module>
+        <module>common-minio</module>
+        <module>common-storage</module>
+        <module>common-mqtt-client</module>
+        <module>common-aiui</module>
+        <module>common-system</module>
+        <module>common-jpush</module>
+        <module>common-vms</module>
+        <module>common-wx-pay</module>
+        <module>common-device</module>
+    </modules>
+
+    <artifactId>common</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>common</name>
+    <description>公共包</description>
+    <packaging>pom</packaging>
+    <properties>
+        <java.version>11</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>23.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
+
+    <distributionManagement>
+        <!-- Maven 上传设置 -->
+        <repository>
+            <id>nexus</id>   <!-- 保持和Settings.xml中配置的Server ID一致 -->
+            <name>snapshots</name>
+            <url>http://192.168.1.73:8081/repository/maven-snapshots/</url>  <!-- 推送到Maven仓库的maven-releases下 -->
+        </repository>
+    </distributionManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

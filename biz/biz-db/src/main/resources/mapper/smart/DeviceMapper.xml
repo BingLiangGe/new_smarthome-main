@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.DeviceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.Device">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="batch_code" property="batchCode"/>
+        <result column="status" property="status"/>
+        <result column="version" property="version"/>
+        <result column="activation_time" property="activationTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , product_id, batch_code, status, activation_time,version, create_time, update_time
+    </sql>
+
+    <select id="customPage" resultType="com.lj.iot.biz.base.vo.DevicePageVo">
+        SELECT d.*,p.product_name FROM device d inner join product p on d.product_id=p.product_id
+        <where>
+            <if test="params.startTime != null">
+                AND create_time>=#{params.startTime}
+            </if>
+            <if test="params.endTime != null">
+                AND create_time &lt; #{params.endTime}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                d.id LIKE CONCAT(#{params.search},"%")
+                OR d.product_id LIKE CONCAT(#{params.search},"%")
+                OR d.batch_code LIKE CONCAT(#{params.search},"%")
+                OR d.version LIKE CONCAT(#{params.search},"%")
+                OR p.product_name LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+        ORDER BY product_id DESC
+    </select>
+
+
+
+    <select id="NewCustomPage" resultType="com.lj.iot.biz.base.vo.DevicePageVo">
+        SELECT d.device_id id,d.soft_ware_version version,d.*,p.product_name FROM user_device d inner join product p on d.product_id=p.product_id
+        <where>
+            <if test="params.startTime != null">
+                AND create_time>=#{params.startTime}
+            </if>
+            <if test="params.endTime != null">
+                AND create_time &lt; #{params.endTime}
+            </if>
+            <if test="params.productId != null">
+                 d.product_id = #{params.productId}
+            </if>
+
+            <if test="params.deviceId != null">
+                AND d.device_id IN
+                <foreach item="item" index="index" collection="params.deviceId"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="params.hotelDevice != null">
+                AND d.device_id NOT  IN
+                <foreach item="item" index="index" collection="params.hotelDevice"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY product_id DESC
+    </select>
+
+    <select id="activation" resultType="Integer">
+        SELECT count(1) FROM device d inner join product p on d.product_id=p.product_id
+        <where>
+            <if test="params.startTime != null">
+                AND create_time>=#{params.startTime}
+            </if>
+            <if test="params.endTime != null">
+                AND create_time &lt; #{params.endTime}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                d.id LIKE CONCAT(#{params.search},"%")
+                OR d.product_id LIKE CONCAT(#{params.search},"%")
+                OR d.batch_code LIKE CONCAT(#{params.search},"%")
+                OR d.version LIKE CONCAT(#{params.search},"%")
+                OR p.product_name LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="unActivation" resultType="Integer">
+        SELECT count(1) FROM device d inner join product p on d.product_id=p.product_id
+        <where>
+            <if test="params.startTime != null">
+                AND create_time>=#{params.startTime}
+            </if>
+            <if test="params.endTime != null">
+                AND create_time &lt; #{params.endTime}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                d.id LIKE CONCAT(#{params.search},"%")
+                OR d.product_id LIKE CONCAT(#{params.search},"%")
+                OR d.batch_code LIKE CONCAT(#{params.search},"%")
+                OR d.version LIKE CONCAT(#{params.search},"%")
+                OR p.product_name LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+    </select>
+
+
+
+    <select id="newActivation" resultType="Integer">
+        SELECT count(1) FROM device d inner join product p on d.product_id=p.product_id
+        <where>
+            <if test="params.productId != null">
+                 d.product_id = #{params.productId}
+            </if>
+            <if test="params.deviceId != null">
+                AND d.id  IN (#{params.deviceId})
+            </if>
+            <if test="params.startTime != null">
+                AND create_time>=#{params.startTime}
+            </if>
+            <if test="params.endTime != null">
+                AND create_time &lt; #{params.endTime}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                d.id LIKE CONCAT(#{params.search},"%")
+                OR d.product_id LIKE CONCAT(#{params.search},"%")
+                OR d.batch_code LIKE CONCAT(#{params.search},"%")
+                OR d.version LIKE CONCAT(#{params.search},"%")
+                OR p.product_name LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="newUnActivation" resultType="Integer">
+        SELECT count(1) FROM device d inner join product p on d.product_id=p.product_id
+        <where>
+            <if test="params.productId != null">
+                 d.product_id = #{params.productId}
+            </if>
+            <if test="params.deviceId != null">
+                AND d.id  IN (#{params.deviceId})
+            </if>
+            <if test="params.startTime != null">
+                AND create_time>=#{params.startTime}
+            </if>
+            <if test="params.endTime != null">
+                AND create_time &lt; #{params.endTime}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                d.id LIKE CONCAT(#{params.search},"%")
+                OR d.product_id LIKE CONCAT(#{params.search},"%")
+                OR d.batch_code LIKE CONCAT(#{params.search},"%")
+                OR d.version LIKE CONCAT(#{params.search},"%")
+                OR p.product_name LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+    </select>
+</mapper>

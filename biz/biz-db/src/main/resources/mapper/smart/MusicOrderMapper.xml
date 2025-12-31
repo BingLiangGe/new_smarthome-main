@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.MusicOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.MusicOrder">
+        <id column="id" property="id" />
+        <result column="amount" property="amount" />
+        <result column="music_id" property="musicId" />
+        <result column="order_no" property="orderNo" />
+        <result column="device_id" property="deviceId" />
+        <result column="pay_type" property="payType" />
+        <result column="prepay_id" property="prepayId" />
+        <result column="state" property="state" />
+        <result column="transaction_id" property="transactionId" />
+        <result column="user_id" property="userId" />
+    </resultMap>
+
+
+    <select id="customPage" resultType="com.lj.iot.biz.base.vo.MusicOrderPageVo">
+        SELECT
+        mo.*,
+        mp.`music_name`,
+        ua.`mobile`,
+        ua.`nickname`
+        FROM
+        music_order mo,
+        user_account ua
+        WHERE mo.user_id = ua.id
+        <where>
+            <if test="params.userId != null and params.userId!=''">
+                AND mo.user_id=#{params.userId}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                mo.order_no LIKE CONCAT(#{params.search},"%")
+                OR mo.`device_id` LIKE CONCAT(#{params.search},"%")
+                OR ua.`mobile` LIKE CONCAT(#{params.search},"%")
+                OR ua.`nickname` LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+        ORDER BY mo.id DESC
+    </select>
+</mapper>

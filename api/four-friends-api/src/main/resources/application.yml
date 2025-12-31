@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: four-friends-api
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
+  servlet:
+    multipart:
+      maxFileSize: 40MB
+      maxRequestSize: 40MB
+
+server:
+  port: 6777
+
+redis:
+  cacheNames:
+    param-config: 300
+    product-type: 300
+    common-cache: 300
+
+sso:
+  app: fourFriends
+  exclude-login-path-patterns: /api/open/**
+  exclude-multipoint-login-path-patterns: /api/open/**,/actuator/**
+  expired: 3600
+
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: '*'
+    web:
+      exposure:
+        include: '*'
+    health:
+      show-details: always
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.lj.iot.biz.db.*.entity,com.lj.iot.common.system.entity
+  global-config:
+    db-config:
+      id-type: auto
+
+logging:
+  baseUrl: ''
+  file:
+    name: ${logging.baseUrl}logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 1GB
+      file-name-pattern: ${logging.baseUrl}logs/${spring.application.name}-%d{yyyy-MM-dd}.%i.log
+      max-history: 10
+  level:
+    io:
+      netty:
+        channel:
+          DefaultChannelPipeline: info
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+
+
+
+

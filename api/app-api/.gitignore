@@ -1,0 +1,13 @@
+
+docs
+target/
+logs
+pom.xml
+AppApiApplication.java
+*.yml
+### IntelliJ IDEA ###
+.idea
+.mvn
+*.iws
+*.iml
+*.ipr

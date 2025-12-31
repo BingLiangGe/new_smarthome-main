@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.EntityAliasMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.EntityAlias">
+        <id column="id" property="id" />
+        <result column="entity_name" property="entityName" />
+        <result column="device_type" property="deviceType" />
+        <result column="attr_type" property="attrType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, entity_name, device_type, attr_type
+    </sql>
+
+    <select id="customPage" resultMap="BaseResultMap">
+        SELECT * FROM entity_alias
+        <where>
+            <if test="params.attrType!=null and params.attrType!=''">
+                AND attr_type = #{params.attrType}
+            </if>
+            <if test="params.deviceType!=null and params.deviceType!=''">
+                AND device_type = #{params.deviceType}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                entity_name LIKE CONCAT(#{params.search},"%")
+                or device_type LIKE CONCAT(#{params.search},"%")
+                or attr_type LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+</mapper>

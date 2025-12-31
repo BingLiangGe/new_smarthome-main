@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.PhonebookMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.Phonebook">
+        <id column="phonebook_id" property="phonebookId" />
+        <result column="mobile" property="mobile" />
+        <result column="nickname" property="nickname" />
+        <result column="device_id" property="deviceId" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        phonebook_id, mobile, nickname, device_id, create_time
+    </sql>
+
+</mapper>

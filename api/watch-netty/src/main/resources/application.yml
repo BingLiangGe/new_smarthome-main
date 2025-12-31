@@ -1,0 +1,64 @@
+#spring:
+#  application:
+#    name: watch
+#  profiles:
+#    active: dev
+#  main:
+#    allow-bean-definition-overriding: true
+#    allow-circular-references: true
+#  servlet:
+#    multipart:
+#      maxFileSize: 10MB
+#      maxRequestSize: 10MB
+#
+#server:
+#  port: 9997
+#  tomcat:
+#    accept-count: 200
+#    threads:
+#      min-spare: 16
+#
+#
+#logging:
+#  baseUrl: ''
+#  file:
+#    name: ${logging.baseUrl}logs/${spring.application.name}.log
+#  logback:
+#    rollingpolicy:
+#      max-file-size: 1GB
+#      file-name-pattern: ${logging.baseUrl}logs/${spring.application.name}-%d{yyyy-MM-dd}.%i.log
+#      max-history: 10
+#  level:
+#    #com.lj.iot.biz.db : DEBUG #线上关闭日志
+#    io:
+#      netty:
+#        channel:
+#          DefaultChannelPipeline: info
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/
+#  instance:
+#    prefer-ip-address: true
+#    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+#
+#
+#mybatis-plus:
+#  mapper-locations: classpath:/mapper/*/*.xml
+#  type-aliases-package: com.lj.iot.biz.db.*.entity
+#  global-config:
+#    db-config:
+#      id-type: auto
+#minio:
+#  endpoint: https://file.lj-smarthome.com/
+#  accessKey: lj-smarthome.com
+#  CCCFDFKey: S26XCAHiqXatLM9To1TiHm1Vrgmfa3c7
+#  bucketName: iot
+#
+#jpush:
+#  DDDDD: 470890653106db1d17ec2b44
+#  CCCFDF: d6425ce99b263f7e42fb2e14
+#  live-time: 86400
+#
+#

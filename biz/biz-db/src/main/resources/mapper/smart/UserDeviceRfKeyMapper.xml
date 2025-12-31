@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.UserDeviceRfKeyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.UserDeviceRfKey">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="device_id" property="deviceId" />
+        <result column="key_id" property="keyId" />
+        <result column="key_idx" property="keyIdx" />
+        <result column="model_id" property="modelId" />
+        <result column="code_data" property="codeData" />
+        <result column="is_effective" property="isEffective" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, device_id, key_id,key_idx, model_id, code_data, is_effective, create_time, update_time
+    </sql>
+    <select id="listByCondition" resultType="com.lj.iot.biz.db.smart.entity.UserDeviceRfKey">
+        SELECT
+            b.*
+        FROM
+            user_device a
+                JOIN user_device_rf_key b ON a.device_id = b.device_id
+        WHERE
+            a.home_id = #{homeId}
+        <if test="deviceId!=null  and deviceId!=''">
+            AND a.device_id = #{deviceId}
+        </if>
+    </select>
+
+
+    <select id="findByid" resultType="com.lj.iot.biz.db.smart.entity.UserDeviceRfKey">
+
+        SELECT s1.id,s1.user_id,s1.device_id,s1.key_id,s1.key_code,s1.model_id,s1.key_idx,s1.key_name,s1.code_data,s1.is_effective,s1.create_time,s1.update_time,s3.identifier FROM user_device_rf_key AS s1
+                                                                                                                                                                                  LEFT JOIN user_device AS  s2  ON s1.device_id = s2.device_id
+                                                                                                                                                                                  LEFT JOIN product_thing_model_key AS s3 ON  s3.product_id = s2.product_id AND s3.key_name = s1.key_name
+        WHERE s1.device_id = #{deviceId}
+    </select>
+
+</mapper>

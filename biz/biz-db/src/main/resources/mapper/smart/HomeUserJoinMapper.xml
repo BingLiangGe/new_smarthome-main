@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.HomeUserJoinMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.HomeUserJoin">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="home_id" property="homeId" />
+        <result column="member_user_id" property="memberUserId" />
+        <result column="member_mobile" property="memberMobile" />
+        <result column="action" property="action" />
+        <result column="state" property="state" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <select id="customPage" resultType="com.lj.iot.biz.base.vo.HomeUserJoinVo">
+        select huj.*,h.home_name from home_user_join huj INNER JOIN home  h on huj.home_id=h.id
+        <where>
+            <if test="params.homeId != null">
+                AND huj.home_id=#{params.homeId}
+            </if>
+            <if test="params.userId != null">
+                AND huj.user_id=#{params.userId}
+            </if>
+            <if test="params.memberUserId != null">
+                AND huj.member_user_id=#{params.memberUserId}
+            </if>
+            <if test="params.action != null and params.action!=''">
+                AND huj.action=#{params.action}
+            </if>
+            <if test="params.state != null and params.state!=''">
+                AND huj.state=#{params.state}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND huj.member_mobile LIKE CONCAT(#{params.search},"%")
+            </if>
+        </where>
+        ORDER BY huj.id DESC
+    </select>
+
+</mapper>

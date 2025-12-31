@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.ProductThingModelKeyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.ProductThingModelKey">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="time" property="time"/>
+        <result column="model_id" property="modelId"/>
+        <result column="delay" property="delay"/>
+        <result column="key_name" property="keyName"/>
+        <result column="key_idx" property="keyIdx"/>
+        <result column="identifier" property="identifier"/>
+        <result column="key_code" property="keyCode"/>
+        <result column="mode" property="mode"/>
+        <result column="step" property="step"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="customPage" resultMap="BaseResultMap">
+        SELECT * FROM product_thing_model_key
+        <where>
+            <if test="params.productId!=null and params.productId!=''">
+                product_id = #{params.productId}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                and (key_name LIKE CONCAT(#{params.search},"%")
+                or key_code LIKE CONCAT(#{params.search},"%")
+                or identifier LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="customList" resultMap="BaseResultMap">
+        SELECT *
+        FROM product_thing_model_key
+        where product_id = #{productId}
+          and model_id = #{modelId}
+    </select>
+
+</mapper>

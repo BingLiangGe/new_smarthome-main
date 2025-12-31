@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.UserAccountMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.UserAccount">
+        <id column="id" property="id" />
+        <result column="avatar_url" property="avatarUrl" />
+        <result column="email" property="email" />
+        <result column="gender" property="gender" />
+        <result column="mobile" property="mobile" />
+        <result column="nickname" property="nickname" />
+        <result column="password" property="password" />
+        <result column="type" property="type" />
+        <result column="actual_user_id" property="actualUserId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <select id="customPage" resultMap="BaseResultMap">
+        SELECT * FROM user_account
+        <where>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                mobile LIKE CONCAT(#{params.search},"%")
+                OR email LIKE CONCAT(#{params.search},"%")
+                OR nickname LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+</mapper>

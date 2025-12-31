@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.MusicMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.MusicMenu">
+        <id column="id" property="id" />
+        <result column="music_name" property="musicName" />
+        <result column="music_url" property="musicUrl" />
+        <result column="device_id" property="deviceId" />
+        <result column="music_id" property="musicId" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        music_name, music_url, id,userid,is_default_music,device_id
+    </sql>
+
+    <select id="findUserid" resultMap="BaseResultMap">
+       select * from music_menu WHERE device_id = #{uId}
+    </select>
+
+    <delete id="removeAll" >
+        DELETE FROM music_menu WHERE device_id =#{deviceId}
+    </delete>
+
+    <select id="selectByMusicMenu" resultMap="BaseResultMap">
+        select * from music_menu WHERE device_id = #{deviceId} and music_id =#{musicId}
+    </select>
+
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.SystemMessagesMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.SystemMessages">
+        <id column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="messages" property="messages" />
+        <result column="read_type" property="readType" />
+        <result column="user_id" property="userId" />
+        <result column="home_id" property="homeId" />
+        <result column="room_id" property="roomId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="in_type" property="inType" />
+        <result column="home_name" property="homeName" />
+        <result column="room_name" property="roomName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, type, messages, read_type, user_id, home_id, room_id,in_type,create_time, update_time
+    </sql>
+
+</mapper>

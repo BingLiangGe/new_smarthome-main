@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.MusicProductMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.MusicProduct">
+        <result column="count" property="count" />
+        <result column="cover_url" property="coverUrl" />
+        <result column="music_name" property="musicName" />
+        <result column="price" property="price" />
+    </resultMap>
+
+    <select id="customPage" resultMap="BaseResultMap">
+        SELECT * FROM music_product
+        <where>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                music_name LIKE CONCAT(#{params.search},"%")
+                OR price LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+</mapper>

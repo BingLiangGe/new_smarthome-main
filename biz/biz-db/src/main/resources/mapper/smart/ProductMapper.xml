@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lj.iot.biz.db.smart.mapper.ProductMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lj.iot.biz.db.smart.entity.Product">
+        <id column="product_id" property="productId"/>
+        <result column="product_code" property="productCode"/>
+        <result column="product_name" property="productName"/>
+        <result column="signal_type" property="signalType"/>
+        <result column="relation_device_type_id" property="relationDeviceTypeId"/>
+        <result column="product_type" property="productType"/>
+        <result column="product_name" property="productName"/>
+        <result column="product_CCCFDF" property="productCCCFDF"/>
+        <result column="thing_model" property="thingModel" javaType="com.lj.iot.common.base.dto.ThingModel"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler"/>
+        <result column="images_url" property="imagesUrl"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="customPage" resultMap="BaseResultMap">
+        SELECT * FROM product
+        <where>
+            <if test="params.productId!=null and params.productId!=''">
+                AND product_id = #{params.productId}
+            </if>
+            <if test="params.signalType!=null and params.signalType!=''">
+                AND signal_type = #{params.signalType}
+            </if>
+            <if test="params.productType != null and params.productType!=''">
+                AND product_type=#{params.productType}
+            </if>
+            <if test="params.search!=null and params.search!=''">
+                AND (
+                product_code LIKE CONCAT(#{params.search},"%")
+                or product_name LIKE CONCAT(#{params.search},"%")
+                )
+            </if>
+        </where>
+        ORDER BY product_id DESC
+    </select>
+</mapper>

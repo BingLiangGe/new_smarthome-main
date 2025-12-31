@@ -1,0 +1,42 @@
+{
+  "projectName": "系统管理后台",
+  "allInOne": true,
+  "allInOneDocFileName": "system-api",
+  "isStrict": false,
+  "outPath": "./docs/api",
+  "coverOld": true,
+  "serverUrl": "{{system}}",
+  "revisionLogs": [{
+    "version": "1.0",
+    "revisionTime": "2022-07-15",
+    "status": "update",
+    "author": "mx",
+    "remarks": "第一版"
+  }],
+  "errorCodeDictionaries": [{
+    "title": "状态码",
+    "enumClassName": "com.lj.iot.common.base.enums.CommonCodeEnum",
+    "codeField": "code",
+    "descField": "desc"
+  }],
+  "requestHeaders": [
+    {
+      "name": "Authorization",
+      "type": "string",
+      "desc": "登录参数",
+      "value": "{{token}}",
+      "required": true,
+      "since": "-",
+      "pathPatterns": "/api/auth/**",
+      "excludePathPatterns": "/api/open/**"
+    }
+  ],
+  "dataDictionaries": [
+    {
+      "title": "返回状态码字典",
+      "enumClassName": "com.lj.iot.common.base.enums.CommonCodeEnum",
+      "codeField": "code",
+      "descField": "desc"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+server:
+  port: 7787
+
+spring:
+  application:
+    name: job
+  redis:
+    host: 120.55.171.103
+    database: 1
+    port: 6287
+    jedis:
+      pool:
+        max-active: 10
+    password: toor.2021
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://120.55.171.103:3308/quartz?useSSL=false&useUnicode=true&characterEncoding=UTF-8&pinGlobalTxToPhysicalConnection=true
+      username: root
+      password: Root_654123abc
+      initial-size: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      use-unfair-lock: true
+      pool-prepared-statements: false
+      max-pool-prepared-statement-per-connection-size: -1
+      validationQuery: SELECT 1
+      test-on-borrow: true
+      test-on-return: false
+      test-while-idle: true
+      keep-alive: true
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 60000
+  quartz:
+    overwrite-existing-jobs: true #重启后覆盖，按理应该设置false
+    jdbc:
+      initialize-schema: NEVER
+    job-store-type: jdbc
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: MyScheduler
+          jobStore:
+            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            isClustered: true
+            useProperties: false
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 50
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+
+logging:
+  baseUrl: ''
+  file:
+    name: ${logging.baseUrl}logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 1GB
+      file-name-pattern: ${logging.baseUrl}logs/${spring.application.name}-%d{yyyy-MM-dd}.%i.log
+      max-history: 10
+  level:
+    io:
+      netty:
+        channel:
+          DefaultChannelPipeline: info
+wx:
+  pay:
+    appId:
+    mchId:
